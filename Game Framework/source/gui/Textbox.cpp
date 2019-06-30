@@ -37,17 +37,20 @@ namespace GF {
 	{
 		renderer.draw(writing, state);
 
-		// flashing line after text
+		// Flashing line after text. Only draws for 500ms every 1000ms (1 second)
 		static sf::Clock clk;
 		if (m_isActive && clk.getElapsedTime().asMilliseconds() > 500 && !textIsSelected)
 			renderer.draw(line, state);
 		if (clk.getElapsedTime().asMilliseconds() > 1000) clk.restart();
 	}
 
-	void TextBox::update(float fElapsedTime) {
-		sf::FloatRect rec = m_text.getLocalBounds();
-		line = GF::Line(sf::Vector2f(m_text.getPosition().x + rec.width + 5, writing.getPosition().y + 10 - writing.getSize().y / 2),
-						sf::Vector2f(m_text.getPosition().x + rec.width + 5, writing.getPosition().y + writing.getSize().y / 2 - 10));
+	void TextBox::update() {
+		// updates the flashing line after the text. Only updates when the text is not selected, because it is only drawn when that happens
+		if (!textIsSelected) {
+			sf::FloatRect rec = m_text.getLocalBounds();
+			line = GF::Line(sf::Vector2f(m_text.getPosition().x + rec.width + 5, writing.getPosition().y + 10 - writing.getSize().y / 2),
+				sf::Vector2f(m_text.getPosition().x + rec.width + 5, writing.getPosition().y + writing.getSize().y / 2 - 10));
+		}
 	}
 
 	void TextBox::setPosition(const sf::Vector2f pos)
@@ -76,6 +79,7 @@ namespace GF {
 			else
 				text += GetClipboardText();
 
+			// update text
 			setText(text);
 			m_text.setFillColor(sf::Color::White);
 			setTextNotSelected();
@@ -84,7 +88,7 @@ namespace GF {
 
 		// select text by double clicking - makes it blue
 		bool isclicked = writing.isClicked(event, window);
-		if (event.type == GF::Event::LeftMouseDoubleClickedEvent && writing.isRolledOn(window)) {
+		if (event.type == GF::Event::LeftMouseDoubleClickedEvent && writing.isRolledOn(window) && text != "") {
 			//text = "";
 			if (!textIsSelected) setTextSelected();
 			return;
@@ -96,6 +100,8 @@ namespace GF {
 				text = "";
 				setText(text);
 			}
+
+			// update text
 			setTextNotSelected();
 			m_text.setFillColor(sf::Color::White);
 			writing.setText(m_text);
@@ -130,16 +136,16 @@ namespace GF {
 	void TextBox::handleTextInput(const GF::Event & event)
 	{
 		if (event.type == GF::Event::TextEntered && m_isActive) {
-			//Get the key that was entered
+			// Get the key that was entered
 			unsigned char keyCode = event.text.unicode;
 
 			// if text is selected ( blue ) then the next letter written will erase the text and start writing from beggining 
 			if (textIsSelected) {
-				// avoid deleting text while trying to copy or paste text (L_CTRL/R_CTRL + C/V)
+				// avoid deleting text (see comment above) while trying to copy or paste text (LCONTROL/RCONTROL + C/V)
 				if ((sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::RControl))
 					&& (sf::Keyboard::isKeyPressed(sf::Keyboard::C) || sf::Keyboard::isKeyPressed(sf::Keyboard::V))) return;
 
-				text = "";
+				text = ""; 
 				m_text.setString(text);
 				m_text.setFillColor(sf::Color::White);
 				setTextNotSelected();
@@ -150,7 +156,7 @@ namespace GF {
 				text.push_back(keyCode);
 			}
 			else if (isBackspace(keyCode)) {
-				//prevents popping back an empty string
+				// prevents popping back an empty string
 				if (text.length() > 0)
 					text.pop_back();
 			}

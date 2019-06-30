@@ -12,18 +12,22 @@ namespace GF {
 
 		TextBox(sf::Vector2f size, sf::Vector2f pos = CENTER_WINDOW, std::string _init_text = "Search");
 
+		// handles text and mouse input events
 		void handleEvent(const GF::Event& event, const sf::RenderWindow& window) override;
 
-		void update(float fElapsedTime);
+		// updates the flashing line in front of the text
+		void update();
 
 		void setPosition(const sf::Vector2f pos);
 
+		// draws the button and line ( the Button class already has a text member variable, so when drawing the box the text is also drawn) 
 		void draw(sf::RenderTarget& renderer, const sf::RenderStates state) const override;
 
 		inline std::string getText() const { return text; }
 
 	private:
 
+		// setup the button and text variables
 		void setup(sf::Vector2f size, sf::Vector2f pos, std::string _init_text);
 
 		void handleClick(const GF::Event& event, const sf::RenderWindow& window);
