@@ -49,6 +49,7 @@ namespace GF {
 			TouchEnded,             ///< A touch event ended (data in event.touch)
 			SensorChanged,          ///< A sensor value changed (data in event.sensor)
 
+			/// My addicional events
 			LeftMouseDoubleClickedEvent,	 ///< left mouse button double clicked (event.mouseButton)
 			LeftMouseClickedOnceEvent,		 ///< left mouse button clicked and released (event.mouseButton)
 			RightMouseDoubleClickedEvent,	 ///< right mouse button double clicked (event.mouseButton)
