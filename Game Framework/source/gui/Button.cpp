@@ -6,19 +6,12 @@ namespace GF {
 	Button<GF::Rectangle>::Button(sf::Vector2f size, const sf::Color t, const sf::Color o, const sf::Color f) : outline(o), fill(f)
 	{
 		m_text.setFillColor(t);
-		this->setSize(size);
-		this->setFillColor(f);
-		this->setOutlineColor(o);
-		this->setOutlineThickness(1);
+		setup(size, { 0, 0 }, { 0, 0 }, f, o, 1);
 	}
 
 	Button<GF::Circle>::Button(float size, const sf::Color t, const sf::Color o, const sf::Color f) : outline(o), fill(f)
 	{
-		m_text.setFillColor(t);
-		this->setRadius(size);
-		this->setFillColor(f);
-		this->setOutlineColor(o);
-		this->setOutlineThickness(1);
+		setup(size, { 0, 0 }, f, o, 1);
 	}
 
 	void Button<GF::Rectangle>::setFunction(void (*func)())
@@ -45,8 +38,7 @@ namespace GF {
 	template<class T>
 	void Button<T>::handleEvent(const GF::Event& event, const sf::RenderWindow& window)
 	{
-		bool contains = this->isRolledOn(window);  // mouse is inside rectangle boundaries
-
+		bool contains = this->isRolledOn(window);  // mouse is inside object boundaries
 		if (contains)
 			this->setOutlineColor(sf::Color::Blue);
 		else
@@ -63,11 +55,6 @@ namespace GF {
 		renderer.draw(m_text, state);
 	}
 
-	void Button<GF::Circle>::setPos(sf::Vector2f pos)
-	{
-		this->setPosition(pos);
-		m_text.setPosition(pos);
-	}
 	void Button<GF::Rectangle>::setPos(sf::Vector2f pos)
 	{
 		this->setPosition(pos);
