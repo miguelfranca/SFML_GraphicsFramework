@@ -43,21 +43,22 @@ namespace GF {
 
 	void Circle::setup(float radius, sf::Vector2f pos, sf::Color fill, sf::Color outline, float thickness){
 		setRadius(radius);
+		setOrigin(radius, radius);
 		setPosition(pos);
 		setFillColor(fill);
 		setOutlineColor(outline);
 		setOutlineThickness(thickness);
-		setOrigin(radius, radius);
 	}
 
 	bool Circle::isColliding(GF::Circle& other) {
-		return pow((getPosition().x - other.getPosition().x), 2) + pow((getPosition().y - other.getPosition().y), 2) <= pow(getRadius() + other.getRadius(), 2);
+		return pow((getPosition().x - other.getPosition().x), 2) + pow((getPosition().y - other.getPosition().y), 2)
+				<= (getRadius() + other.getRadius())* (getRadius() + other.getRadius());
 	}
 
-	bool Circle::isRolledOn(const sf::RenderWindow& window) const
+	bool Circle::isRolledOn(const sf::RenderWindow& window, float thershold) const
 	{
 		auto pos = sf::Mouse::getPosition(window);
-		return getRadius()*getRadius() <= (getPosition().x - pos.x)*(getPosition().x - pos.x) - (getPosition().y - pos.y)*(getPosition().y - pos.y);
+		return (getRadius() + thershold)*(getRadius() + thershold) >= (getPosition().x - pos.x)*(getPosition().x - pos.x) + (getPosition().y - pos.y)*(getPosition().y - pos.y);
 	}
 
 	bool Circle::isClicked(const GF::Event& event, const sf::RenderWindow& window)
