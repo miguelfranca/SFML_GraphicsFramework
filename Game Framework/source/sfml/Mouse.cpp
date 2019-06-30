@@ -1,4 +1,5 @@
 #include "../../headers/sfml/Mouse.h"
+#include <iostream>
 
 namespace GF {
 	Mouse::Button Mouse::Left(sf::Mouse::Left);
@@ -33,5 +34,13 @@ namespace GF {
 			first_click = false;
 
 		return false;
+	}
+
+	bool Mouse::Button::isPressed() {
+		return sf::Mouse::isButtonPressed(button);
+	}
+
+	sf::Vector2f Mouse::getPosition(const sf::RenderWindow& window) {
+		return sf::Vector2f((float)sf::Mouse::getPosition(window).x, (float)sf::Mouse::getPosition(window).y);
 	}
 }
