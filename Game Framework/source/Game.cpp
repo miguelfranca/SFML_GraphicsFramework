@@ -11,8 +11,8 @@ namespace GF {
 
 
 	void Game::setMaxFPS(int frames) {
-		//fps.setMaxFPS(frames); // both work
-		window.setFramerateLimit(frames); // but this one works better D;
+		fps.setMaxFPS(frames); // both work
+		//window.setFramerateLimit(frames); // but this one only works sometimes? TODO
 	}
 
 	void Game::run() {
@@ -84,13 +84,13 @@ namespace GF {
 	void Game::update() {
 		window.clear();
 
-		// shows fps count, if fps is activated
-		if (!showfps) fps.update(); // keeps counting fps event it is not being displayed (in case a max fps is set)
-		else fps.draw(window, sf::RenderStates::Default); // draw() already calls update()
-
-		float fElapsedTime = fps.getElapsedTime();
+		float fElapsedTime = fps.getElapsedTime(); // time between frames
 
 		// updates and draws entities of the game
 		should_exit = !onUpdate(fElapsedTime) || !onDraw(window, sf::RenderStates::Default);
+		
+		// shows fps count, if fps is activated
+		if (!showfps) fps.update(); // keeps counting fps event it is not being displayed (in case a max fps is set)
+		else fps.draw(window, sf::RenderStates::Default); // draw() already calls update()
 	}
 }
