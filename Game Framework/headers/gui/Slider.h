@@ -8,8 +8,8 @@ namespace GF {
 	class Slider : public Widget {
 	public:
 	
-		Slider(const float size, const sf::Vector2f pos = CENTER_WINDOW, const std::string orientacion = VERTICAL, const double max = 0, const double min = 0);
-		Slider(const sf::Vector2f size, const sf::Vector2f pos = CENTER_WINDOW, const std::string orientacion = VERTICAL, const double max = 0, const double min = 0);
+		Slider(float size, const sf::Vector2f pos = CENTER_WINDOW, const std::string orientacion = VERTICAL, const double max = 0, const double min = 0);
+		Slider(sf::Vector2f size, const sf::Vector2f pos = CENTER_WINDOW, const std::string orientacion = VERTICAL, const double max = 0, const double min = 0);
 
 		void handleEvent(const GF::Event& event, const sf::RenderWindow& window) override;
 
@@ -38,5 +38,7 @@ namespace GF {
 
 		std::string orientacion;
 		double max, min;
+
+		void (*m_function) () = nullptr;
 	};
 }
