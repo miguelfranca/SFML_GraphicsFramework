@@ -1,4 +1,5 @@
 #include "../../headers/sfml/Shapes.h"
+#include "../../headers/sfml/Mouse.h"
 
 namespace GF {
 	
@@ -55,16 +56,16 @@ namespace GF {
 				<= (getRadius() + other.getRadius())* (getRadius() + other.getRadius());
 	}
 
-	bool Circle::isRolledOn(const sf::RenderWindow& window, float thershold) const
+	bool Circle::isRolledOn(const sf::RenderWindow& window, float threshold) const
 	{
 		auto pos = sf::Mouse::getPosition(window);
-		return (getRadius() + thershold)*(getRadius() + thershold) >= (getPosition().x - pos.x)*(getPosition().x - pos.x) + (getPosition().y - pos.y)*(getPosition().y - pos.y);
+		return (getRadius() + threshold)*(getRadius() + threshold) >= (getPosition().x - pos.x)*(getPosition().x - pos.x) + (getPosition().y - pos.y)*(getPosition().y - pos.y);
 	}
 
-	bool Circle::isClicked(const GF::Event& event, const sf::RenderWindow& window)
+	bool Circle::isClicked(const GF::Event& event, const sf::RenderWindow& window, float threshold)
 	{
-		if (isRolledOn(window)) {
-			if (event.type == GF::Event::LeftMouseClickedOnceEvent) {
+		if (isRolledOn(window, threshold)) {
+			if (GF::Mouse::Left.clicked(event)) {
 				return true;
 			}
 		}
