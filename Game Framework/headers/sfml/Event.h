@@ -8,6 +8,8 @@ namespace GF {
 	public:
 		Event() : type(NoEvent) {};
 
+		void skip() { type = NoEvent; }
+
 		Event(sf::Event event){
 			this->type = GF::Event::EventType(event.type);
 			this->size = event.size;
