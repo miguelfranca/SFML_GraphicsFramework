@@ -3,7 +3,7 @@
 
 namespace GF {
 
-	FPSCounter::FPSCounter() : text(sf::Vector2f(0, 0), 7 * SW, sf::Color::White)
+	FPSCounter::FPSCounter() : text(sf::Vector2f(0, 0), 15, sf::Color::White)
 	{
 	}
 
