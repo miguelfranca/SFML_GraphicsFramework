@@ -5,7 +5,7 @@
 
 namespace GF {
 
-	class Game {
+	class Game : public NonCopyable, public NonMovable{
 	public:
 
 		void setMaxFPS(int frames = 60);

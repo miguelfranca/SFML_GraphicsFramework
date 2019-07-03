@@ -54,14 +54,14 @@ namespace GF {
 		// if any addicional events are detected, the event.type is overridden.
 
 		// for mouse double click event to be triggered, the mouse must be clicked twice in a small period of time ( about 250 ms between clicks)
-		if (GF::Mouse::Left.doubleClicked(v))
+		if (GF::Mouse::Left.doubleClicked((GF::Event&)v))
 			event.type = GF::Event::LeftMouseDoubleClickedEvent;
-		else if (GF::Mouse::Right.doubleClicked(v))
+		else if (GF::Mouse::Right.doubleClicked((GF::Event&)v))
 			event.type = GF::Event::RightMouseDoubleClickedEvent;
-		// cliked once means the event is only triggered when the mouse button is released
-		else if (GF::Mouse::Left.clickedOnce(v))
+		// cliked once means the event the user must release the mouse button before the event is triggered again
+		else if (GF::Mouse::Left.clicked((GF::Event&)v))
 			event.type = GF::Event::LeftMouseClickedOnceEvent;
-		else if (GF::Mouse::Right.clickedOnce(v))
+		else if (GF::Mouse::Right.clicked((GF::Event&)v))
 			event.type = GF::Event::RightMouseClickedOnceEvent;
 		else event = GF::Event(v);
 
@@ -69,6 +69,9 @@ namespace GF {
 	}
 
 	void Game::handleEvent(GF::Event & event) {
+		// handle game events
+		if (!onHandleEvent(event)) should_exit = true;
+
 		// closing window events - X button on window or esc on keyboard
 		if (event.type == GF::Event::Closed || (event.type == GF::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
 			should_exit = true;
@@ -76,9 +79,6 @@ namespace GF {
 		// show fps event - F key
 		if ((event.type == GF::Event::KeyReleased && event.key.code == sf::Keyboard::F))
 			showfps = !showfps;
-
-		// handle game events
-		should_exit = !onHandleEvent(event);
 	}
 
 	void Game::update() {
@@ -87,7 +87,8 @@ namespace GF {
 		float fElapsedTime = fps.getElapsedTime(); // time between frames
 
 		// updates and draws entities of the game
-		should_exit = !onUpdate(fElapsedTime) || !onDraw(window, sf::RenderStates::Default);
+		if(!onUpdate(fElapsedTime) || !onDraw(window, sf::RenderStates::Default)) 
+			should_exit = true;
 		
 		// shows fps count, if fps is activated
 		if (!showfps) fps.update(); // keeps counting fps event it is not being displayed (in case a max fps is set)
