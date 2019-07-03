@@ -33,7 +33,7 @@ namespace GF {
 		loadFont();
 		t.setFont(font);
 		t.setString(text);
-		t.setCharacterSize(charSize);
+		t.setCharacterSize(charSize * SH);
 		t.setFillColor(color);
 		t.setCenter(origin);
 		t.setPosition(pos);

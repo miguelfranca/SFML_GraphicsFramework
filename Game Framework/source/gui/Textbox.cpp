@@ -12,6 +12,9 @@ namespace GF {
 	}
 
 	void TextBox::setup(sf::Vector2f size, sf::Vector2f pos, std::string _init_text) {
+		size.x *= SW;
+		size.y *= SH;
+
 		init_text = _init_text;
 		text = _init_text;
 
@@ -21,7 +24,7 @@ namespace GF {
 
 		m_text.setString(init_text);
 		m_text.setCenter(MIDDLELEFT);
-		m_text.setPosition(sf::Vector2f(pos.x - size.x / 2 + 10, pos.y));
+		m_text.setPosition(sf::Vector2f(pos.x - size.x / 2 + 10 * SW, pos.y));
 		m_text.setFillColor(sf::Color(192, 192, 192));
 
 		writing.setText(m_text);
@@ -48,8 +51,8 @@ namespace GF {
 		// updates the flashing line after the text. Only updates when the text is not selected, because it is only drawn when that happens
 		if (!textIsSelected) {
 			sf::FloatRect rec = m_text.getLocalBounds();
-			line = GF::Line(sf::Vector2f(m_text.getPosition().x + rec.width + 5, writing.getPosition().y + 10 - writing.getSize().y / 2),
-				sf::Vector2f(m_text.getPosition().x + rec.width + 5, writing.getPosition().y + writing.getSize().y / 2 - 10));
+			line = GF::Line(sf::Vector2f(m_text.getPosition().x + rec.width + 2 * SW, writing.getPosition().y + 5 * SH - writing.getSize().y / 2),
+				sf::Vector2f(m_text.getPosition().x + rec.width + 2 * SW, writing.getPosition().y + writing.getSize().y / 2 - 5 * SH));
 		}
 	}
 
@@ -62,14 +65,24 @@ namespace GF {
 	{
 		static GF::ToggleKey C(sf::Keyboard::C);
 		static GF::ToggleKey V(sf::Keyboard::V);
-		// CTRL*C to copy to clipboard (LCONTROL/RCONTROL + C)
+		static GF::ToggleKey X(sf::Keyboard::X);
+		static GF::ToggleKey A(sf::Keyboard::A);
+
+		// CTRL + C / X to copy to clipboard (LCONTROL/RCONTROL + C/X)
 		if ((sf::Keyboard::isKeyPressed(sf::Keyboard::RControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
-			&& C.isKeyReleasedOnce(event) && textIsSelected) {
+			&& (C.isKeyReleasedOnce(event) || X.isKeyPressedOnce()) && textIsSelected) {
 			CopyToClipboard(text.c_str());
 			return;
 		}
 
-		// CTRL+V to paste from clipboard (LCONTROL/RCONTROL + V)
+		// CTRL + X to copy to clipboard (LCONTROL/RCONTROL + X)
+		if ((sf::Keyboard::isKeyPressed(sf::Keyboard::RControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
+			&& X.isKeyPressedOnce() && textIsSelected) {
+			CopyToClipboard(text.c_str());
+			return;
+		}
+
+		// CTRL + V to paste from clipboard (LCONTROL/RCONTROL + V)
 		if ((sf::Keyboard::isKeyPressed(sf::Keyboard::RControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 			&& V.isKeyReleasedOnce(event)) {
 
@@ -86,7 +99,14 @@ namespace GF {
 			return;
 		}
 
-		// select text by double clicking - makes it blue
+		// CTRL + A to select the text (LCONTROL/RCONTROL + A)
+		if ((sf::Keyboard::isKeyPressed(sf::Keyboard::RControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
+			&& A.isKeyReleasedOnce(event) && text != "" && m_isActive) {
+			if (!textIsSelected) setTextSelected();
+			return;
+		}
+
+		// double click on mouse to select the text - makes it blue
 		bool isclicked = writing.isClicked(event, window);
 		if (event.type == GF::Event::LeftMouseDoubleClickedEvent && writing.isRolledOn(window) && text != "") {
 			//text = "";
@@ -102,9 +122,8 @@ namespace GF {
 			}
 
 			// update text
-			setTextNotSelected();
 			m_text.setFillColor(sf::Color::White);
-			writing.setText(m_text);
+			setTextNotSelected();
 			m_isActive = true;
 		}
 
@@ -128,7 +147,6 @@ namespace GF {
 	}
 
 	void TextBox::setTextNotSelected() {
-		m_text.setOutlineColor(sf::Color::Transparent);
 		textIsSelected = false;
 		writing.setText(m_text);
 	}
@@ -141,11 +159,13 @@ namespace GF {
 
 			// if text is selected ( blue ) then the next letter written will erase the text and start writing from beggining 
 			if (textIsSelected) {
-				// avoid deleting text (see comment above) while trying to copy or paste text (LCONTROL/RCONTROL + C/V)
+				// avoid deleting text (see comment above) while trying to copy or paste text (LCONTROL/RCONTROL + C/V/A)
+				// with LCONTROL/RCONTROL + X there is no need for handling. The text is deleted (was copied to clipboard previously on handleEvent)
 				if ((sf::Keyboard::isKeyPressed(sf::Keyboard::LControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::RControl))
-					&& (sf::Keyboard::isKeyPressed(sf::Keyboard::C) || sf::Keyboard::isKeyPressed(sf::Keyboard::V))) return;
+				&& (sf::Keyboard::isKeyPressed(sf::Keyboard::C) || sf::Keyboard::isKeyPressed(sf::Keyboard::V) || sf::Keyboard::isKeyPressed(sf::Keyboard::A)))
+					return;
 
-				text = ""; 
+				text = "";
 				m_text.setString(text);
 				m_text.setFillColor(sf::Color::White);
 				setTextNotSelected();
@@ -171,7 +191,7 @@ namespace GF {
 	Keeps the "origin" at the last written letter so, the first letters, as soon as the text doesnt fit the textbox, will disapear*/
 	void TextBox::setText(const std::string str) {
 		m_text.setString(str);
-		if (m_text.getLocalBounds().width + 20 >= writing.getGlobalBounds().width) {
+		if (m_text.getLocalBounds().width + 20 * SW >= writing.getGlobalBounds().width) {
 			std::string s = m_text.getString().toAnsiString().erase(0, 1);
 			setText(s);
 		}
