@@ -22,7 +22,7 @@ namespace GF {
 		Circle(float radius, sf::Vector2f pos = TOPLEFT_F, sf::Color fill = sf::Color::White, sf::Color outline = sf::Color::Transparent, float thickness = 0);
 		bool isColliding(GF::Circle& other);
 		bool isRolledOn(const sf::RenderWindow& window, float threshold = 0.f) const;
-		bool isClicked(const GF::Event& event, const sf::RenderWindow& window, float threshold);
+		bool isClicked(const GF::Event& event, const sf::RenderWindow& window, float threshold = 0.f);
 		void setup(float radius, sf::Vector2f pos, sf::Color fill, sf::Color outline, float thickness);
 	private:
 	};
