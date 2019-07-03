@@ -17,7 +17,7 @@ const unsigned SCREENWIDTH = (int)(1280.f * SW);
 const unsigned SCREENHEIGHT = (int)(720.f * SH);
 
 // text
-#define DEFAULT_CHAR_SIZE 40
+#define DEFAULT_CHAR_SIZE 30
 #define DEFAULT_CHAR_COLOR sf::Color::White
 
 #define CENTER sf::Vector2f(getSize().x / 2.f, getSize().y / 2.f)
