@@ -1,10 +1,8 @@
 #include "../../headers/gui/Textbox.h"
-#include <windows.h>
+#include "../../headers/sfml/Clipboard.h"
 
 
 namespace GF {
-	void CopyToClipboard(const char* str);
-	std::string GetClipboardText();
 
 	TextBox::TextBox() : writing(sf::Vector2f(0, 0)) { setup(sf::Vector2f(200, 50), CENTER_WINDOW, "Search"); }
 	TextBox::TextBox(sf::Vector2f size, sf::Vector2f pos, std::string _init_text) : writing(sf::Vector2f(0, 0)) {
@@ -71,14 +69,14 @@ namespace GF {
 		// CTRL + C / X to copy to clipboard (LCONTROL/RCONTROL + C/X)
 		if ((sf::Keyboard::isKeyPressed(sf::Keyboard::RControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 			&& (C.isKeyReleasedOnce(event) || X.isKeyPressedOnce()) && textIsSelected) {
-			CopyToClipboard(text.c_str());
+			GF::Clipboard::setText(text.c_str());
 			return;
 		}
 
 		// CTRL + X to copy to clipboard (LCONTROL/RCONTROL + X)
 		if ((sf::Keyboard::isKeyPressed(sf::Keyboard::RControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
 			&& X.isKeyPressedOnce() && textIsSelected) {
-			CopyToClipboard(text.c_str());
+			GF::Clipboard::setText(text.c_str());
 			return;
 		}
 
@@ -88,9 +86,9 @@ namespace GF {
 
 			// replaces the text if it is being slected (blue color). Otherwise, just add to it
 			if (textIsSelected)
-				text = GetClipboardText();
+				text = GF::Clipboard::getText();
 			else
-				text += GetClipboardText();
+				text += GF::Clipboard::getText();
 
 			// update text
 			setText(text);
@@ -115,7 +113,7 @@ namespace GF {
 		}
 
 		// beggin writing by clicking inside the box
-		if (event.type == GF::Event::LeftMouseClickedOnceEvent && writing.isRolledOn(window)) {
+		if (GF::Mouse::Left.clicked(event) && writing.isRolledOn(window)) {
 			if (text == init_text && !m_isActive) {
 				text = "";
 				setText(text);
@@ -128,7 +126,7 @@ namespace GF {
 		}
 
 		// stop writing by clicking outside the box
-		if (event.type == GF::Event::LeftMouseClickedOnceEvent && !writing.isRolledOn(window)) {
+		if (GF::Mouse::Left.clicked(event) && !writing.isRolledOn(window)) {
 			m_isActive = false;
 			m_text.setFillColor(sf::Color(192, 192, 192)); // gray
 			if (text == "") {
@@ -209,48 +207,5 @@ namespace GF {
 	bool TextBox::isBackspace(unsigned char keycode)
 	{
 		return keycode == 8;
-	}
-
-	// https://stackoverflow.com/questions/1264137/how-to-copy-string-to-clipboard-in-c
-	void CopyToClipboard(const char* str) {
-		const size_t len = strlen(str) + 1;
-		HGLOBAL hMem = GlobalAlloc(GMEM_MOVEABLE, len);
-		memcpy(GlobalLock(hMem), str, len);
-		GlobalUnlock(hMem);
-		OpenClipboard(0);
-		EmptyClipboard();
-		SetClipboardData(CF_TEXT, hMem);
-		CloseClipboard();
-	}
-
-	// https://stackoverflow.com/questions/14762456/getclipboarddatacf-text
-	std::string GetClipboardText()
-	{
-		// Try opening the clipboard
-		if (!OpenClipboard(nullptr)) {
-			std::cout << "couldnt open the clipboard" << std::endl;
-			exit(0);
-		}
-
-		// Get handle of clipboard object for ANSI text
-		HANDLE hData = GetClipboardData(CF_TEXT);
-		if (hData == nullptr)
-			std::cout << "error getting handle of clipboard object" << std::endl;
-
-		// Lock the handle to get the actual text pointer
-		char* pszText = static_cast<char*>(GlobalLock(hData));
-		if (pszText == nullptr)
-			std::cout << "error locking the handle" << std::endl;
-
-		// Save text in a string class instance
-		std::string text(pszText);
-
-		// Release the lock
-		GlobalUnlock(hData);
-
-		// Release the clipboard
-		CloseClipboard();
-
-		return text;
 	}
 }
