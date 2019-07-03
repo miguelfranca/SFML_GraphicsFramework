@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include "Event.h"
 
 namespace GF {
 
@@ -10,10 +11,11 @@ namespace GF {
 		public:
 			Button(sf::Mouse::Button);
 
-			bool clickedOnce(sf::Event& event);
-			bool doubleClicked(sf::Event& event);
+			bool clicked(const GF::Event& event);
+			bool doubleClicked(GF::Event& event);
 
 			bool isPressed();
+			bool released(GF::Event& event);
 
 		private:
 			sf::Mouse::Button button;

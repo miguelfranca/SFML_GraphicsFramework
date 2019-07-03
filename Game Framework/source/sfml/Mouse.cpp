@@ -12,14 +12,14 @@ namespace GF {
 		button = b;
 	}
 
-	bool Mouse::Button::clickedOnce(sf::Event& event) {
-		return event.type == event.MouseButtonReleased && event.mouseButton.button == button;
+	bool Mouse::Button::clicked(const GF::Event &event) {
+		return event.type == GF::Event::MouseButtonPressed && event.mouseButton.button == button;
 	}
 
-	bool Mouse::Button::doubleClicked(sf::Event& event) {
+	bool Mouse::Button::doubleClicked(GF::Event& event) {
 		static sf::Clock clock;
 
-		bool button_released = event.type == event.MouseButtonReleased && event.mouseButton.button == button;
+		bool button_released = event.type == GF::Event::MouseButtonReleased && event.mouseButton.button == button;
 
 		if (button_released && first_click && clock.getElapsedTime().asMilliseconds() < 250) // 250 ms between clicks
 			return true;
@@ -34,6 +34,10 @@ namespace GF {
 			first_click = false;
 
 		return false;
+	}
+
+	bool Mouse::Button::released(GF::Event& event) {
+		return event.type == GF::Event::MouseButtonReleased && event.mouseButton.button == button;
 	}
 
 	bool Mouse::Button::isPressed() {
