@@ -8,10 +8,10 @@ namespace GF {
 	class ToggleKey
 	{
 	public:
-		ToggleKey(sf::Keyboard::Key);
+		ToggleKey(sf::Keyboard::Key key) : m_key(key) { }
 
-		bool isKeyPressed();
-		bool isKeyPressedOnce();
+		bool isKeyPressed() { return sf::Keyboard::isKeyPressed(m_key); }
+		bool isKeyPressedOnce(const GF::Event& event){ return event.type == GF::Event::KeyPressed && event.key.code == m_key; }
 		bool isKeyReleasedOnce(const GF::Event& event) { return event.type == GF::Event::KeyReleased && event.key.code == m_key; }
 
 	private:
