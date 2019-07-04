@@ -66,7 +66,7 @@ namespace GF {
 	bool Circle::isClicked(const GF::Event& event, const sf::RenderWindow& window, float threshold)
 	{
 		if (isRolledOn(window, threshold)) {
-			if (GF::Mouse::Left.clicked(event)) {
+			if (event.type == GF::Event::LeftMouseClickedOnceEvent) {
 				return true;
 			}
 		}
@@ -76,6 +76,12 @@ namespace GF {
 	Line::Line(sf::Vector2f pos1, sf::Vector2f pos2) : line(sf::Lines, 2) {
 		line[0].position = pos1;
 		line[1].position = pos2;
+	}
+
+	float Line::angleBetween(GF::Line& snd) {
+		float m1 = (line[0].position.y - line[1].position.y) / (line[0].position.x - line[1].position.x);
+		float m2 = (snd[0].position.y - snd[1].position.y) / (snd[0].position.x - snd[1].position.x);
+		return 180.f - abs(std::atanf(m1) - std::atanf(m2));
 	}
 
 	void Line::draw(sf::RenderTarget& renderer, sf::RenderStates state) const {

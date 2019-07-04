@@ -32,6 +32,8 @@ namespace GF {
 		Line(sf::Vector2f pos1 = sf::Vector2f(0, 0), sf::Vector2f pos2 = sf::Vector2f(0, 0));
 
 		void draw(sf::RenderTarget& renderer, sf::RenderStates state) const;
+
+		float angleBetween(GF::Line& line);
 	private:
 		sf::VertexArray line;
 	};
