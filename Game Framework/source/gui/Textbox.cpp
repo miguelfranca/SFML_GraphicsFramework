@@ -68,14 +68,14 @@ namespace GF {
 
 		// CTRL + C / X to copy to clipboard (LCONTROL/RCONTROL + C/X)
 		if ((sf::Keyboard::isKeyPressed(sf::Keyboard::RControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
-			&& (C.isKeyReleasedOnce(event) || X.isKeyPressedOnce()) && textIsSelected) {
+			&& (C.isKeyReleasedOnce(event) || X.isKeyPressedOnce(event)) && textIsSelected) {
 			GF::Clipboard::setText(text.c_str());
 			return;
 		}
 
 		// CTRL + X to copy to clipboard (LCONTROL/RCONTROL + X)
 		if ((sf::Keyboard::isKeyPressed(sf::Keyboard::RControl) || sf::Keyboard::isKeyPressed(sf::Keyboard::LControl))
-			&& X.isKeyPressedOnce() && textIsSelected) {
+			&& X.isKeyPressedOnce(event) && textIsSelected) {
 			GF::Clipboard::setText(text.c_str());
 			return;
 		}

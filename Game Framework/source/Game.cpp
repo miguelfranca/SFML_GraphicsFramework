@@ -52,18 +52,26 @@ namespace GF {
 		}
 
 		// if any addicional events are detected, the event.type is overridden.
+		event = GF::Event(v);
 
 		// for mouse double click event to be triggered, the mouse must be clicked twice in a small period of time ( about 250 ms between clicks)
-		if (GF::Mouse::Left.doubleClicked((GF::Event&)v))
+		if (GF::Mouse::Left.doubleClicked(event)) {
 			event.type = GF::Event::LeftMouseDoubleClickedEvent;
-		else if (GF::Mouse::Right.doubleClicked((GF::Event&)v))
+			event.mouseButton.button = sf::Mouse::Left;
+		}
+		else if (GF::Mouse::Right.doubleClicked(event)) {
 			event.type = GF::Event::RightMouseDoubleClickedEvent;
+			event.mouseButton.button = sf::Mouse::Right;
+		}
 		// cliked once means the event the user must release the mouse button before the event is triggered again
-		else if (GF::Mouse::Left.clicked((GF::Event&)v))
+		else if (GF::Mouse::Left.clicked(event)) {
 			event.type = GF::Event::LeftMouseClickedOnceEvent;
-		else if (GF::Mouse::Right.clicked((GF::Event&)v))
+			event.mouseButton.button = sf::Mouse::Left;
+		}
+		else if (GF::Mouse::Right.clicked(event)) {
 			event.type = GF::Event::RightMouseClickedOnceEvent;
-		else event = GF::Event(v);
+			event.mouseButton.button = sf::Mouse::Right;
+		}
 
 		return event.type;
 	}
