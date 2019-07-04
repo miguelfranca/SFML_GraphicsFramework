@@ -5,7 +5,9 @@
 #define PI 3.14159265358979f
 #define MIN_PI 3.14f;
 
-#define For(b) for(int i = 0; i < b; ++i)
+#define For0(b) for(int i = 0; i < b; ++i)
+#define For1(b, c) for(int b = 0; b < c; ++b)
+#define ForFor(b, c) for(int i = 0; i < b; ++i) for(int j = 0; j < c; ++j)
 #define For2(i, b) for(int i = 0; i < b; ++i)
 #define For3(i, a, b) for(int i = a; i < b; ++i)
 #define For4(i, a, b, c) for(int i = a; abs(i) < abs(b); i += c)
