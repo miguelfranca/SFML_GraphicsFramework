@@ -6,3 +6,4 @@
 #include "headers/sfml/Shapes.h"
 #include "headers/sfml/Text.h"
 #include "headers/sfml/ToggleKey.h"
+#include "headers/sfml/VectorOp.h"
