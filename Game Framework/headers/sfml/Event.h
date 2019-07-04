@@ -87,9 +87,9 @@ namespace GF {
 			case GF::Event::MouseWheelMoved:
 				std::cout << "mouse wheel moved Position: (" << mouseWheel.x << "," << mouseWheel.y << ")\tDelta: " << mouseWheel.delta << std::endl;
 				break;
-			case GF::Event::MouseWheelScrolled:
-				std::cout << "mouse wheel scrooled Position: (" << mouseWheel.x << "," << mouseWheel.y << ")\tDelta: " << mouseWheel.delta << std::endl;
-				break;
+			/*case GF::Event::MouseWheelScrolled:
+				std::cout << "mouse wheel scrooled Position: (" <<mouseWheelScroll.x << "," << mouseWheel.y << ")\tDelta: " << mouseWheel.delta  << "\tWheel: " << mouseWheelScroll.wheel << std::endl;
+				break;*/
 			case GF::Event::MouseButtonPressed:
 				std::cout << "mouse button pressed Position: (" << mouseButton.x << "," << mouseButton.y << ")\tButton: " << mouseButton.button << std::endl;
 				break;
