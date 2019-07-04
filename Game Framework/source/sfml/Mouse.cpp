@@ -16,7 +16,7 @@ namespace GF {
 		return event.type == GF::Event::MouseButtonPressed && event.mouseButton.button == button;
 	}
 
-	bool Mouse::Button::doubleClicked(GF::Event& event) {
+	bool Mouse::Button::doubleClicked(const GF::Event& event) {
 		static sf::Clock clock;
 
 		bool button_released = event.type == GF::Event::MouseButtonReleased && event.mouseButton.button == button;

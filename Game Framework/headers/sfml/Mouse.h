@@ -12,7 +12,7 @@ namespace GF {
 			Button(sf::Mouse::Button);
 
 			bool clicked(const GF::Event& event);
-			bool doubleClicked(GF::Event& event);
+			bool doubleClicked(const GF::Event& event);
 
 			bool isPressed();
 			bool released(GF::Event& event);
