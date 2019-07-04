@@ -1,5 +1,6 @@
 #include "../../headers/sfml/Shapes.h"
 #include "../../headers/sfml/Mouse.h"
+#include "../../headers/sfml/VectorOp.h"
 
 namespace GF {
 	
@@ -58,8 +59,8 @@ namespace GF {
 
 	bool Circle::isRolledOn(const sf::RenderWindow& window, float threshold) const
 	{
-		auto pos = sf::Mouse::getPosition(window);
-		return (getRadius() + threshold)*(getRadius() + threshold) >= (getPosition().x - pos.x)*(getPosition().x - pos.x) + (getPosition().y - pos.y)*(getPosition().y - pos.y);
+		auto pos = GF::Mouse::getPosition(window);
+		return (getRadius() + threshold)*(getRadius() + threshold) >= dist(getPosition(), pos) * dist(getPosition(), pos);
 	}
 
 	bool Circle::isClicked(const GF::Event& event, const sf::RenderWindow& window, float threshold)
