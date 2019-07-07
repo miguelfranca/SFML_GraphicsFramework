@@ -20,6 +20,7 @@ namespace GF {
 		writing.setPos(pos);
 		writing.setOrigin(size.x / 2, size.y / 2);
 
+		m_text.setCharacterSize((int)(size.y * 0.75));
 		m_text.setString(init_text);
 		m_text.setCenter(MIDDLELEFT);
 		m_text.setPosition(sf::Vector2f(pos.x - size.x / 2 + 10 * SW, pos.y));
@@ -113,7 +114,7 @@ namespace GF {
 		}
 
 		// beggin writing by clicking inside the box
-		if (GF::Mouse::Left.clicked(event) && writing.isRolledOn(window)) {
+		if (event.type == GF::Event::LeftMouseClickedOnceEvent && writing.isRolledOn(window)) {
 			if (text == init_text && !m_isActive) {
 				text = "";
 				setText(text);
@@ -126,7 +127,7 @@ namespace GF {
 		}
 
 		// stop writing by clicking outside the box
-		if (GF::Mouse::Left.clicked(event) && !writing.isRolledOn(window)) {
+		if (event.type == GF::Event::LeftMouseClickedOnceEvent && !writing.isRolledOn(window)) {
 			m_isActive = false;
 			m_text.setFillColor(sf::Color(192, 192, 192)); // gray
 			if (text == "") {
