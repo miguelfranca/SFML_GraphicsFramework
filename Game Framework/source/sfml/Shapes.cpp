@@ -1,6 +1,7 @@
 #include "../../headers/sfml/Shapes.h"
 #include "../../headers/sfml/Mouse.h"
 #include "../../headers/sfml/VectorOp.h"
+#include "../../headers/Util/Maths.h"
 
 namespace GF {
 	
@@ -80,8 +81,8 @@ namespace GF {
 
 	float Line::angleBetween(GF::Line& snd) {
 		float m1 = (line[0].position.y - line[1].position.y) / (line[0].position.x - line[1].position.x);
-		float m2 = (snd[0].position.y - snd[1].position.y) / (snd[0].position.x - snd[1].position.x);
-		return 180.f - abs(std::atanf(m1) - std::atanf(m2));
+		float m2 = (snd.line[0].position.y - snd.line[1].position.y) / (snd.line[0].position.x - snd.line[1].position.x);
+		return abs(toDegrees(atan((m2 - m1) / 1 - m1*m2)));
 	}
 
 	void Line::draw(sf::RenderTarget& renderer, sf::RenderStates state) const {
