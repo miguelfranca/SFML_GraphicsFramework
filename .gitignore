@@ -1,0 +1,10 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/SFML_Game_Framework/v16/Browse.VC.db
+*.opendb
+*.suo
+*.ipch
+*.json
+*.sqlite
