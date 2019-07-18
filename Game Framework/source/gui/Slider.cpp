@@ -45,7 +45,7 @@ namespace GF {
 	}
 
 	template<class T2>
-	void Slider<T2>::handleEvent(const GF::Event& event, const sf::RenderWindow& window)
+	void Slider<T2>::handleEvent(const sf::Event& event, const sf::RenderWindow& window)
 	{
 		static const float factor = -3.f * SW;
 		if (orientacion == VERTICAL)
@@ -55,7 +55,7 @@ namespace GF {
 					slider.setPosition(slider.getPosition().x, GF::Mouse::getPosition(window).y);
 					if (m_function != nullptr) m_function();
 				}
-				if (event.type == GF::Event::MouseWheelMoved) { // scrolling with the mouse wheel moves the slider
+				if (event.type == sf::Event::MouseWheelMoved) { // scrolling with the mouse wheel moves the slider
 					if (box.getGlobalBounds().contains({ slider.getPosition().x, slider.getPosition().y + event.mouseWheel.delta * factor }))
 						slider.move(0, event.mouseWheel.delta * factor);
 					if (m_function != nullptr) m_function();
@@ -71,7 +71,7 @@ namespace GF {
 					slider.setPosition(GF::Mouse::getPosition(window).x, slider.getPosition().y);
 					if (m_function != nullptr) m_function();
 				}
-				if (event.type == GF::Event::MouseWheelMoved) {
+				if (event.type == sf::Event::MouseWheelMoved) {
 					if (box.getGlobalBounds().contains({ slider.getPosition().x + event.mouseWheel.delta * factor, slider.getPosition().y }))
 						slider.move(event.mouseWheel.delta * factor, 0);
 					if (m_function != nullptr) m_function();

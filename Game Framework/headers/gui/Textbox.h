@@ -2,7 +2,6 @@
 #include "../Global.h"
 #include "Button.h"
 #include "../holders/Widget.h"
-#include "../sfml/Event.h"
 
 namespace GF {
 	class TextBox : public Widget {
@@ -13,7 +12,7 @@ namespace GF {
 		TextBox(sf::Vector2f size, sf::Vector2f pos = CENTER_WINDOW, std::string _init_text = "Search");
 
 		// handles text and mouse input events
-		void handleEvent(const GF::Event& event, const sf::RenderWindow& window) override;
+		void handleEvent(const sf::Event& event, const sf::RenderWindow& window) override;
 
 		// updates the flashing line in front of the text
 		void update();
@@ -30,8 +29,8 @@ namespace GF {
 		// setup the button and text variables
 		void setup(sf::Vector2f size, sf::Vector2f pos, std::string _init_text);
 
-		void handleClick(const GF::Event& event, const sf::RenderWindow& window);
-		void handleTextInput(const GF::Event& event);
+		void handleClick(const sf::Event& event, const sf::RenderWindow& window);
+		void handleTextInput(const sf::Event& event);
 
 		bool isValidCharacter(unsigned char keyCode);
 		bool isBackspace(unsigned char keycode);

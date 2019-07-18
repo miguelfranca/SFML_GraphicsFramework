@@ -20,7 +20,7 @@ namespace GF {
 		// initializes the game. Exits if any error occured
 		if (should_exit = !onCreate()) return;
 
-		static GF::Event event;
+		static sf::Event event;
 
 		window.create(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT), title);
 		window.setPosition(CENTER_SCREEN);
@@ -42,50 +42,23 @@ namespace GF {
 		window.close();
 	}
 
-	GF::Event::EventType Game::pollEvent(GF::Event & event) {
-		static sf::Event v;
-
-		// if no event was triggered return GF::Event::NoEvent
-		if (!window.pollEvent(v)) { // window.pollEvent does not change the event type if there is no event on the event buffer, so i change it by hand
-			v.type = sf::Event::TouchBegan; event.type = GF::Event::NoEvent;
-			return event.type;
-		}
-
-		// if any addicional events are detected, the event.type is overridden.
-		event = GF::Event(v);
-
-		// for mouse double click event to be triggered, the mouse must be clicked twice in a small period of time ( about 250 ms between clicks)
-		if (GF::Mouse::Left.doubleClicked(event)) {
-			event.type = GF::Event::LeftMouseDoubleClickedEvent;
-			event.mouseButton.button = sf::Mouse::Left;
-		}
-		else if (GF::Mouse::Right.doubleClicked(event)) {
-			event.type = GF::Event::RightMouseDoubleClickedEvent;
-			event.mouseButton.button = sf::Mouse::Right;
-		}
-		// cliked once means the event the user must release the mouse button before the event is triggered again
-		else if (GF::Mouse::Left.clicked(event)) {
-			event.type = GF::Event::LeftMouseClickedOnceEvent;
-			event.mouseButton.button = sf::Mouse::Left;
-		}
-		else if (GF::Mouse::Right.clicked(event)) {
-			event.type = GF::Event::RightMouseClickedOnceEvent;
-			event.mouseButton.button = sf::Mouse::Right;
-		}
-
+	sf::Event::EventType Game::pollEvent(sf::Event & event) {
+		// if no event was triggered return sf::Event::NoEvent. window.pollEvent returns false if no event was detected
+		if (!window.pollEvent(event)) // window.pollEvent does not change the event type if there is no event on the event buffer, so we change it by hand
+			event.type = sf::Event::Count; // unused event. Not best solution...
 		return event.type;
 	}
 
-	void Game::handleEvent(GF::Event & event) {
+	void Game::handleEvent(sf::Event & event) {
 		// handle game events
 		if (!onHandleEvent(event)) should_exit = true;
 
 		// closing window events - X button on window or esc on keyboard
-		if (event.type == GF::Event::Closed || (event.type == GF::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
+		if (event.type == sf::Event::Closed || (event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::Escape))
 			should_exit = true;
 
 		// show fps event - F key
-		if ((event.type == GF::Event::KeyReleased && event.key.code == sf::Keyboard::F))
+		if ((event.type == sf::Event::KeyReleased && event.key.code == sf::Keyboard::F))
 			showfps = !showfps;
 	}
 

@@ -23,7 +23,7 @@ namespace GF {
 		void setText(const GF::Text &t);
 		void setTexture(const sf::Texture& tex);
 
-		void handleEvent(const GF::Event& event, const sf::RenderWindow& window) override;
+		void handleEvent(const sf::Event& event, const sf::RenderWindow& window) override;
 		void draw(sf::RenderTarget& renderer, sf::RenderStates state) const;
 		void setPos(sf::Vector2f pos);
 

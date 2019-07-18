@@ -30,10 +30,10 @@ namespace GF {
 		return getGlobalBounds().contains((float)pos.x, (float)pos.y);
 	}
 
-	bool Rectangle::Rectangle::isClicked(const GF::Event& event, const sf::RenderWindow& window)
+	bool Rectangle::Rectangle::isClicked(const sf::Event& event, const sf::RenderWindow& window)
 	{
 		if (isRolledOn(window)) {
-			if (event.type == GF::Event::LeftMouseClickedOnceEvent) {
+			if (GF::Mouse::Left.clicked(event)) {
 				return true;
 			}
 		}
@@ -64,10 +64,10 @@ namespace GF {
 		return (getRadius() + threshold)*(getRadius() + threshold) >= dist(getPosition(), pos) * dist(getPosition(), pos);
 	}
 
-	bool Circle::isClicked(const GF::Event& event, const sf::RenderWindow& window, float threshold)
+	bool Circle::isClicked(const sf::Event& event, const sf::RenderWindow& window, float threshold)
 	{
 		if (isRolledOn(window, threshold)) {
-			if (event.type == GF::Event::LeftMouseClickedOnceEvent) {
+			if (GF::Mouse::Left.clicked(event)) {
 				return true;
 			}
 		}

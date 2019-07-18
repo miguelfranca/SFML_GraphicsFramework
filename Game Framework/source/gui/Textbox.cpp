@@ -29,7 +29,7 @@ namespace GF {
 		writing.setText(m_text);
 	}
 
-	void TextBox::handleEvent(const GF::Event & event, const sf::RenderWindow & window)
+	void TextBox::handleEvent(const sf::Event & event, const sf::RenderWindow & window)
 	{
 		handleClick(event, window);
 		handleTextInput(event);
@@ -60,7 +60,7 @@ namespace GF {
 		writing.setPos(pos);
 	}
 
-	void TextBox::handleClick(const GF::Event & event, const sf::RenderWindow & window)
+	void TextBox::handleClick(const sf::Event & event, const sf::RenderWindow & window)
 	{
 		static GF::ToggleKey C(sf::Keyboard::C);
 		static GF::ToggleKey V(sf::Keyboard::V);
@@ -106,15 +106,13 @@ namespace GF {
 		}
 
 		// double click on mouse to select the text - makes it blue
-		bool isclicked = writing.isClicked(event, window);
-		if (event.type == GF::Event::LeftMouseDoubleClickedEvent && writing.isRolledOn(window) && text != "") {
-			//text = "";
+		if (GF::Mouse::Left.doubleClicked(event) && writing.isRolledOn(window) && text != "") {
 			if (!textIsSelected) setTextSelected();
 			return;
 		}
 
 		// beggin writing by clicking inside the box
-		if (event.type == GF::Event::LeftMouseClickedOnceEvent && writing.isRolledOn(window)) {
+		if (GF::Mouse::Left.clicked(event) && writing.isRolledOn(window)) {
 			if (text == init_text && !m_isActive) {
 				text = "";
 				setText(text);
@@ -127,7 +125,7 @@ namespace GF {
 		}
 
 		// stop writing by clicking outside the box
-		if (event.type == GF::Event::LeftMouseClickedOnceEvent && !writing.isRolledOn(window)) {
+		if (GF::Mouse::Left.clicked(event) && !writing.isRolledOn(window)) {
 			m_isActive = false;
 			m_text.setFillColor(sf::Color(192, 192, 192)); // gray
 			if (text == "") {
@@ -150,9 +148,9 @@ namespace GF {
 		writing.setText(m_text);
 	}
 
-	void TextBox::handleTextInput(const GF::Event & event)
+	void TextBox::handleTextInput(const sf::Event & event)
 	{
-		if (event.type == GF::Event::TextEntered && m_isActive) {
+		if (event.type == sf::Event::TextEntered && m_isActive) {
 			// Get the key that was entered
 			unsigned char keyCode = event.text.unicode;
 

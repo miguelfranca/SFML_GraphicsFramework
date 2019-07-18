@@ -11,7 +11,7 @@ namespace GF {
 		Slider(float size, const sf::Vector2f pos = CENTER_WINDOW, const std::string orientacion = VERTICAL, const double max = 0, const double min = 0);
 		Slider(sf::Vector2f size, const sf::Vector2f pos = CENTER_WINDOW, const std::string orientacion = VERTICAL, const double max = 0, const double min = 0);
 
-		void handleEvent(const GF::Event& event, const sf::RenderWindow& window) override;
+		void handleEvent(const sf::Event& event, const sf::RenderWindow& window) override;
 
 		void draw(sf::RenderTarget& renderer, const sf::RenderStates state) const override;
 

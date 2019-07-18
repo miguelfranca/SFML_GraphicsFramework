@@ -36,7 +36,7 @@ namespace GF {
 	}
 
 	template<class T>
-	void Button<T>::handleEvent(const GF::Event& event, const sf::RenderWindow& window)
+	void Button<T>::handleEvent(const sf::Event& event, const sf::RenderWindow& window)
 	{
 		bool contains = this->isRolledOn(window);  // mouse is inside object boundaries
 		if (contains)
@@ -44,7 +44,7 @@ namespace GF {
 		else
 			this->setOutlineColor(outline);
 
-		if(event.type == GF::Event::MouseButtonPressed && event.mouseButton.button == sf::Mouse::Left && contains) // left mouse button is pressed
+		if(GF::Mouse::Left.clicked(event) && contains) // left mouse button is pressed
 			if(m_function != NULL) m_function(); // function is defined
 	}
 

@@ -1,7 +1,6 @@
 #pragma once
 #include "../holders.h"
 #include "FPSCounter.h"
-#include "sfml/Event.h"
 
 namespace GF {
 
@@ -12,12 +11,11 @@ namespace GF {
 		void showFPS(bool);
 
 		virtual bool onCreate() = 0;
-		virtual bool onHandleEvent(GF::Event& event) = 0;
+		virtual bool onHandleEvent(sf::Event& event) = 0;
 		virtual bool onUpdate(float fElapsedTime) = 0;
 		virtual bool onDraw(sf::RenderTarget& renderer, sf::RenderStates state) = 0;
 
 		void run();
-
 
 	private:
 		GF::FPSCounter fps;
@@ -29,8 +27,8 @@ namespace GF {
 		sf::RenderWindow window;
 
 	private:
-		GF::Event::EventType pollEvent(GF::Event &event);
-		void handleEvent(GF::Event& event);
+		sf::Event::EventType pollEvent(sf::Event &event);
+		void handleEvent(sf::Event& event);
 		void update();
 	};
 }
