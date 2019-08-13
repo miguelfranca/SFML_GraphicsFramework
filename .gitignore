@@ -1,6 +1,4 @@
-﻿/.vs/SFML_Game_Framework/v16/Browse.VC.db
-*.opendb
-*.suo
-*.ipch
-*.json
-*.sqlite
+﻿bin/
+
+*.o
+*.d
