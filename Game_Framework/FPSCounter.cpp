@@ -38,4 +38,9 @@ namespace GF {
 		text.setString("FPS " + std::to_string((int)m_fps));
 		text.draw(renderer, state);
 	}
+
+	void FPSCounter::setFillColor(const sf::Color color){
+		text.setFillColor(color);
+	}
+
 }

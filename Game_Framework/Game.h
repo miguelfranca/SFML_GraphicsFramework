@@ -25,6 +25,8 @@ namespace GF {
 		sf::Clock begin;
 		bool showfps;
 
+		sf::Color clear_color;
+
 	protected:
 		std::string title = "Window";
 		sf::RenderWindow window;
@@ -37,6 +39,8 @@ namespace GF {
 		void addWidget(GF::Widget* widget, std::string name = "");
 		void clearWidgets();
 		inline void deleteWidget(const std::string name);
+
+		void setClearColor(const sf::Color);
 
 	private:
 		GF::Event::EventType pollEvents(GF::Event &event);

@@ -29,10 +29,10 @@ namespace GF {
 				std::cout << "text entered Key: " << (char)(key.code) << std::endl;
 				break;
 			case GF::Event::KeyPressed:
-				std::cout << "keypressed Key: " << (char)(key.code + 65) << std::endl;
+				std::cout << "keypressed Key: " << key.code /*(char)(key.code + 65)*/ << std::endl;
 				break;
 			case GF::Event::KeyReleased:
-				std::cout << "key realesed Key: " << (char)(key.code + 65) << std::endl;
+				std::cout << "key realesed Key: " << key.code /*(char)(key.code + 65)*/ << std::endl;
 				break;
 			case GF::Event::MouseWheelMoved:
 				std::cout << "mouse wheel moved Position: (" << mouseWheel.x << "," << mouseWheel.y << ")\tDelta: " << mouseWheel.delta << std::endl;

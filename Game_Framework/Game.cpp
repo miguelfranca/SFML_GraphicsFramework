@@ -5,7 +5,12 @@
 
 namespace GF {
 
-	Game::~Game() { clearWidgets(); if(window.isOpen()) window.close();}
+	Game::~Game() {
+		clearWidgets();
+		if(window.isOpen()) 
+			window.close();
+		clear_color = sf::Color::Black;
+	}
 
 	void Game::showFPS(bool show) {
 		showfps = show;
@@ -54,6 +59,7 @@ namespace GF {
 		}
 
 		onDestroy();
+		clearWidgets();
 	}
 
 	GF::Event::EventType Game::pollEvents(GF::Event& event) {
@@ -87,7 +93,7 @@ namespace GF {
 	}
 
 	void Game::update() {
-		window.clear();
+		window.clear(clear_color);
 
 		float fElapsedTime = fps.getElapsedTime(); // time between frames
 		float fTotalTime = begin.getElapsedTime().asSeconds(); // time between frames
@@ -115,24 +121,29 @@ namespace GF {
 		else fps.draw(window, sf::RenderStates::Default); // draw() already calls update()
 	}
 
-	void GF::Game::addWidget(GF::Widget* widget, std::string name) {
+	void Game::addWidget(GF::Widget* widget, std::string name) {
 		if (name == "") name = widgets.size();
 		widgets.insert(std::pair<std::string, GF::Widget*>(name, widget));
 	}
 
-	void GF::Game::deleteWidget(const std::string name) { 
+	void Game::deleteWidget(const std::string name) { 
 		if(widgets.find(name) != widgets.end()){
 			delete widgets[name];
 			widgets.erase(name);
 		} 
 	}
-	
 
-	void GF::Game::clearWidgets(){
+	void Game::clearWidgets(){
 		for (auto& widget : widgets)
 			delete widget.second;
 		widgets.clear();
 	}
 
-
+	void Game::setClearColor(const sf::Color color){
+		clear_color = color;
+		if(clear_color == sf::Color::White)
+			fps.setFillColor(sf::Color::Black);
+		if(clear_color == sf::Color::Black)
+			fps.setFillColor(sf::Color::White);
+	}
 }

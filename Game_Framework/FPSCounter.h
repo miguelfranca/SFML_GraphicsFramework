@@ -23,6 +23,8 @@ namespace GF {
 		// returns time between frames as seconds
 		inline float getElapsedTime() const { return elapsedTime; }
 
+		void setFillColor(const sf::Color);
+
 	private:
 		sf::Clock m_inBetween;
 		sf::Clock m_fpsTimer;
