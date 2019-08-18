@@ -58,15 +58,20 @@ namespace GF {
 		setOutlineThickness(thickness);
 	}
 
+	bool Circle::contains(sf::Vector2f pos, float threshold)
+	{
+		return (getRadius() + threshold) >= dist(getPosition(), pos);
+	}
+
 	bool Circle::isColliding(GF::Circle& other) {
 		return pow((getPosition().x - other.getPosition().x), 2) + pow((getPosition().y - other.getPosition().y), 2)
-				<= (getRadius() + other.getRadius())* (getRadius() + other.getRadius());
+		<= (getRadius() + other.getRadius())* (getRadius() + other.getRadius());
 	}
 
 	bool Circle::isRolledOn(const sf::RenderWindow& window, float threshold) const
 	{
 		auto pos = GF::Mouse::getPosition(window);
-		return (getRadius() + threshold)*(getRadius() + threshold) >= dist(getPosition(), pos) * dist(getPosition(), pos);
+		return (getRadius() + threshold) >= dist(getPosition(), pos);
 	}
 
 	bool Circle::isClicked(const GF::Event& event, const sf::RenderWindow& window, float threshold)

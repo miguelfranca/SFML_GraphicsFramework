@@ -73,8 +73,9 @@ namespace GF {
 		// handle game events
 		if (!onHandleEvent(event)) should_exit = true;
 
-		for(auto& widget : widgets) {
-			if(!widget.second->handleEvent(event))
+		for(auto w : widget_names) {
+			GF::Widget* widget = widgets[w];
+			if(!widget->handleEvent(event))
 				should_exit = true;
 		}
 
@@ -103,9 +104,11 @@ namespace GF {
 			gui.draw();
 		#endif
 
-		for (auto& widget : widgets)
-			if(!widget.second->update(fElapsedTime, fTotalTime) ||
-				!widget.second->draw()) should_exit = true;
+		for (auto w : widget_names){
+			GF::Widget* widget = widgets[w];
+			if(!widget->update(fElapsedTime, fTotalTime) ||
+				!widget->draw()) should_exit = true;
+		}
 				
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		//TODO: change to ERROR and change return of 'update' and 'draw' from 'bool' to 'GAME_STATE'
@@ -123,10 +126,20 @@ namespace GF {
 
 	void Game::addWidget(GF::Widget* widget, std::string name) {
 		if (name == "") name = widgets.size();
+		widget_names.push_back(name);
 		widgets.insert(std::pair<std::string, GF::Widget*>(name, widget));
 	}
 
 	void Game::deleteWidget(const std::string name) { 
+
+		auto end = std::remove_if(widget_names.begin(), widget_names.end(),
+			[name](std::string const &n)
+			{	
+				return n == name; // removes if mouse position is inside circle boundaries
+			});
+
+		widget_names.erase(end, widget_names.end());
+
 		if(widgets.find(name) != widgets.end()){
 			delete widgets[name];
 			widgets.erase(name);
@@ -134,9 +147,19 @@ namespace GF {
 	}
 
 	void Game::clearWidgets(){
+		widget_names.clear();
 		for (auto& widget : widgets)
 			delete widget.second;
 		widgets.clear();
+	}
+
+	GF::Widget* Game::getWidget(const std::string name)
+	{
+		if(widgets.find(name) != widgets.end()){
+			return widgets[name];
+		}
+		else
+			return nullptr;
 	}
 
 	void Game::setClearColor(const sf::Color color){

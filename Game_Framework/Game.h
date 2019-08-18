@@ -31,6 +31,7 @@ namespace GF {
 		std::string title = "Window";
 		sf::RenderWindow window;
 		std::map<std::string, GF::Widget*> widgets;
+		std::vector<std::string> widget_names;
 
 	#ifdef TGUI_TGUI_HPP
 		tgui::Gui gui;
@@ -39,6 +40,7 @@ namespace GF {
 		void addWidget(GF::Widget* widget, std::string name = "");
 		void clearWidgets();
 		inline void deleteWidget(const std::string name);
+		GF::Widget* getWidget(const std::string name);
 
 		void setClearColor(const sf::Color);
 
