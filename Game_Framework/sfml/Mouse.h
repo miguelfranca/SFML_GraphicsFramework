@@ -22,10 +22,18 @@ namespace GF {
 			bool first_click = false;
 			sf::Clock clock;
 		};
+
+		class Middle : public Button{
+		public:
+			Middle() : Button(sf::Mouse::Button::Middle) {}
+
+			bool moved(GF::Event &event);
+			int delta(GF::Event &event);
+		};
 		
 		static sf::Vector2f getPosition(const sf::RenderWindow &window);
 		static Button Left;
 		static Button Right;
-		static Button Middle;
+		static Middle Wheel;
 	};
 }

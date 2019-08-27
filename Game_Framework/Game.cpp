@@ -115,8 +115,8 @@ namespace GF {
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 		// updates and draws entities of the game
-				if (!onUpdate(fElapsedTime, fTotalTime) || !onDraw())
-					should_exit = true;
+		if (!onUpdate(fElapsedTime, fTotalTime) || !onDraw())
+			should_exit = true;
 
 
 		// shows fps count, if fps is activated

@@ -12,7 +12,7 @@ namespace GF {
 	{
 		m_target = renderer;
 		m_text.setFillColor(t);
-		setup(size, { 0, 0 }, { 0, 0 }, f, o, 1);
+		setup(size, { 0, 0 }, { size.x / 2, size.y / 2 }, f, o, 1);
 	}
 
 	template<>
@@ -35,7 +35,7 @@ namespace GF {
 	{
 		m_target = renderer;
 		this->setTexture(texture);
-		setup(size, pos, {0, 0}, fill, outline, 1);
+		setup(size, pos, { size.x / 2, size.y / 2 }, fill, outline, 1);
 	}
 
 
@@ -66,8 +66,8 @@ namespace GF {
 		else
 			this->setOutlineColor(outline);
 
-		if (GF::Mouse::Left.clicked(event) && contains) // left mouse button is pressed
-			if (m_function != NULL) m_function(); // if function is defined execute
+		// if (GF::Mouse::Left.clicked(event) && contains) // left mouse button is pressed
+		// 	if (m_function != nullptr) m_function(); // if function is defined execute it
 		return true;
 	}
 

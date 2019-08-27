@@ -44,6 +44,6 @@ namespace GF {
 		sf::Color fill;
 
 		Text        m_text;
-		void (*m_function)() = NULL;
+		void (*m_function)() = nullptr;
 	};
 }

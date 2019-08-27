@@ -5,7 +5,7 @@
 namespace GF {
 	Mouse::Button Mouse::Left(sf::Mouse::Left);
 	Mouse::Button Mouse::Right(sf::Mouse::Right);
-	Mouse::Button Mouse::Middle(sf::Mouse::Middle);
+	Mouse::Middle Mouse::Wheel;
 
 	Mouse::Mouse(){
 	}
@@ -47,5 +47,14 @@ namespace GF {
 
 	sf::Vector2f Mouse::getPosition(const sf::RenderWindow& window) {
 		return sf::Vector2f((float)sf::Mouse::getPosition(window).x, (float)sf::Mouse::getPosition(window).y);
+	}
+
+	bool Mouse::Middle::moved(GF::Event &event)
+	{
+		return event.type == sf::Event::MouseWheelMoved;
+	}
+	int Mouse::Middle::delta(GF::Event &event)
+	{
+		return event.mouseWheel.delta;
 	}
 }
