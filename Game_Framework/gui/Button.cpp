@@ -8,34 +8,38 @@ namespace GF {
 	Button<GF::Rectangle>::Button(sf::RenderTarget* renderer, sf::Vector2f size,
 		const sf::Color t,
 		const sf::Color o,
-		const sf::Color f) : outline(o), fill(f)
+		const sf::Color f,
+		const sf::Color o2) 
+	: outline(o), fill(f), outline2(o2)
 	{
 		m_target = renderer;
 		m_text.setFillColor(t);
-		setup(size, { 0, 0 }, { size.x / 2, size.y / 2 }, f, o, 1);
+		setup(size, { 0, 0 }, { size.x / 2, size.y / 2 }, f, o, 3);
 	}
 
 	template<>
 	Button<GF::Circle>::Button(sf::RenderTarget* renderer, float size,
 		const sf::Color t,
 		const sf::Color o,
-		const sf::Color f)
-	: outline(o), fill(f)
+		const sf::Color f,
+		const sf::Color o2)
+	: outline(o), fill(f), outline2(o2)
 	{
 		m_target = renderer;
-		setup(size, { 0, 0 }, f, o, 1);
+		setup(size, { 0, 0 }, f, o, 3);
 	}
 
 	template<>
 	Button<GF::Rectangle>::Button(sf::RenderTarget* renderer, const sf::Texture* texture, sf::Vector2f pos,
 		sf::Vector2f size,
 		const sf::Color o,
-		const sf::Color f)
-	: outline(o), fill(f)
+		const sf::Color f,
+		const sf::Color o2)
+	: outline(o), fill(f), outline2(o2)
 	{
 		m_target = renderer;
 		this->setTexture(texture);
-		setup(size, pos, { size.x / 2, size.y / 2 }, fill, outline, 1);
+		setup(size, pos, { size.x / 2, size.y / 2 }, fill, outline, 3);
 	}
 
 
@@ -57,12 +61,17 @@ namespace GF {
 		m_text = t;
 	}
 
+	template<>
+	void Button<GF::Rectangle>::setTextSize(unsigned size){
+		m_text.setCharacterSize(size);
+	}
+
 	template<class T>
 	bool Button<T>::handleEvent(GF::Event& event)
 	{
 		bool contains = this->isRolledOn((sf::RenderWindow&) * m_target);  // mouse is inside object boundaries
 		if (contains)
-			this->setOutlineColor(sf::Color::Blue);
+			this->setOutlineColor(outline2);
 		else
 			this->setOutlineColor(outline);
 
