@@ -1,32 +1,38 @@
 #pragma once
 
 #include <SFML/Graphics.hpp>
-#include "holders/Drawable.h"
+#include "holders/Widget.h"
 #include "sfml/Text.h"
 
-namespace GF {
+#define DISPLAY_FREQ 0.1  // seconds
 
-	class FPSCounter : public Drawable
+namespace GF
+{
+
+	class FPSCounter : public GF::Widget
 	{
 	public:
-		FPSCounter();
+		FPSCounter(sf::RenderTarget* renderer = nullptr);
 
 		// draws a string into the window with the fps counter
-		void draw(sf::RenderTarget& renderer, sf::RenderStates state) override;
+		bool draw() override;
+		bool handleEvent(GF::Event& event) override;
 
-		// sets the max limit of frames per second (oscilates a little bit around the given number)
-		void setMaxFPS(int frames = 60);
+		// sets the max limit of frames per second
+		void setMaxFPS(unsigned frames = 60);
 
-		// calculates FPS
-		void update();
+		inline float getMaxFPS() const { return max_frame_count; }
 
-		// returns time between frames as seconds
+		inline void show(bool s = true) { showfps = s; }
+
+		// returns time between each frame, as seconds
 		inline float getElapsedTime() const { return elapsedTime; }
+
+		inline float getFPS() const { return m_fps; }
 
 		void setFillColor(const sf::Color);
 
 	private:
-		sf::Clock m_inBetween;
 		sf::Clock m_fpsTimer;
 
 		float m_fps = 0.f;
@@ -34,7 +40,14 @@ namespace GF {
 
 		GF::Text text;
 
-		int m_frameCount = 0;
 		int max_frame_count = -1;
+
+		unsigned display_counter = 0;
+
+		bool showfps = true;
+
+	private:
+		// calculates fps
+		void update();
 	};
 }
