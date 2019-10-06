@@ -50,8 +50,12 @@ namespace GF {
 	}
 
 	template<>
-	void Button<GF::Rectangle>::setText(const std::string str)
-	{
+	void Button<GF::Rectangle>::setText(const std::string str) {
+		m_text.setString(str);
+		if (m_text.getLocalBounds().width + 20 * SW >= getGlobalBounds().width) {
+			std::string s = m_text.getString().toAnsiString().erase(0, 1);
+			setText(s);
+		}
 		m_text.setString(str);
 		m_text.setCenter(CENTERED);
 	}
