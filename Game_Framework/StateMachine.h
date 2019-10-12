@@ -10,63 +10,20 @@ namespace GF
 	{
 	public:
 
-		StateMachine()
-		{
-			mCurrentState = new EmptyState();
-			mStates.insert(std::pair<std::string, State*>("EmptyState", mCurrentState));
-		}
+		StateMachine();
 
-		bool onCreate()
-		{
-			return mCurrentState->onCreate();
-		}
+		bool onCreate();
+		bool onHandleEvent(GF::Event& event);
+		bool onUpdate(float fElapsedTime, float fTotalTime);
+		bool onDraw();
+		void onDestroy();
 
-		bool onHandleEvent(GF::Event& event)
-		{
-			return mCurrentState->onHandleEvent(event);
-		}
-
-		bool onUpdate(float fElapsedTime, float fTotalTime)
-		{
-			return mCurrentState->onUpdate(fElapsedTime, fTotalTime);
-		}
-
-		bool onDraw()
-		{
-			return mCurrentState->onDraw();
-		}
-
-		void onDestroy()
-		{
-			mCurrentState->onDestroy();
-		}
-
-		bool change(const std::string stateName)
-		{
-			if (mStates.find(stateName) == mStates.end())
-				std::cout << "\n\""  << stateName << "\" State not found" << std::endl;
-
-			mCurrentState->onDestroy();
-			mCurrentState = mStates[stateName];
-			return mCurrentState->onCreate();
-		}
-
-		bool change(const std::string stateName, State* state)
-		{
-			if (mStates.find(stateName) == mStates.end())
-				add(stateName, state);
-
-			mCurrentState->onDestroy();
-			mCurrentState = mStates[stateName];
-			return mCurrentState->onCreate();
-		}
-
-		void add(std::string name, State* state)
-		{
-			mStates.insert(std::pair<std::string, State*>(name, state));
-		}
+		bool change(const std::string stateName, State* state = nullptr);
+		void add(std::string name, State* state);
+		void deleteState(const std::string stateName);
 
 	private:
+		std::map<std::string, State*> activeStates;
 		std::map<std::string, State*> mStates;
 		State* mCurrentState;
 	};

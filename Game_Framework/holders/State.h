@@ -23,11 +23,11 @@ namespace GF
 	{
 	public:
 		EmptyState() { }
-		EmptyState(StateMachine* stateMachine) { sm = stateMachine; }
+		EmptyState(StateMachine* stateMachine) { states = stateMachine; }
 
 		~EmptyState() { }
 
-		bool onCreate() { return true; }
+		bool onCreate() override { return true; }
 
 		bool onHandleEvent(GF::Event& event) override { return true; }
 
@@ -38,6 +38,6 @@ namespace GF
 		void onDestroy() override { }
 
 	protected:
-		StateMachine* sm;
+		StateMachine* states;
 	};
 }

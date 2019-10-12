@@ -5,11 +5,16 @@
 
 namespace GF
 {
+	Game::Game() : fps(&window), max_fps(-1), should_exit(false)
+	{
+#ifdef TGUI_TGUI_HPP
+		gui.setTarget(window);
+#endif
+		states.add("home", this);
+	}
 
 	Game::~Game()
 	{
-		clearWidgets();
-
 		if (window.isOpen())
 			window.close();
 
@@ -25,7 +30,7 @@ namespace GF
 	void Game::setMaxFPS(int frames)
 	{
 		max_fps = frames;
-		//window.setFramerateLimit(frames); // cannot set this before window is created
+		//fps.setMaxFPS(max_fps); // cannot set this before sfml window is created
 	}
 
 	void Game::run()
@@ -38,17 +43,14 @@ namespace GF
 			window.setPosition(CENTER_SCREEN);
 		}
 
-		fps.setMaxFPS(max_fps); // both work
+		fps.setMaxFPS(max_fps);
 
 #ifdef TGUI_TGUI_HPP
 		gui.setView(window.getView());
 #endif
 
-
-		// initializes the game. Exits if any error occured
-		// if (!onCreate())
-		// 	return;
-		if (!sm.onCreate())
+		// initializes the game. 'onCreate' gets called automatically when a new state is added. Exits if any error occured
+		if (!states.onCreate())
 			return;
 
 		static GF::Event event;
@@ -59,7 +61,7 @@ namespace GF
 
 			handleEvent(event); // handles the event
 
-			update(); // clears the window and draws the entities
+			update(); // clears the window, updates and draws the entities
 
 			window.display(); // displays everything into the window
 
@@ -68,7 +70,7 @@ namespace GF
 				break;
 		}
 
-		sm.onDestroy();
+		states.onDestroy();
 		clearWidgets();
 	}
 
@@ -85,13 +87,11 @@ namespace GF
 	void Game::handleEvent(GF::Event& event)
 	{
 		// handle game events
-		if (!sm.onHandleEvent(event))
+		if (!states.onHandleEvent(event))
 			should_exit = true;
 
-		for (auto w : widget_names) {
-			GF::Widget* widget = widgets[w];
-
-			if (!widget->handleEvent(event))
+		for (auto& widget : widgets) {
+			if (!widget.second->handleEvent(event))
 				should_exit = true;
 		}
 
@@ -115,7 +115,7 @@ namespace GF
 		window.clear(clear_color);
 
 		float fElapsedTime = fps.getElapsedTime(); // time between frames
-		float fTotalTime = begin.getElapsedTime().asSeconds(); // time between frames
+		float fTotalTime = begin.getElapsedTime().asSeconds(); // time since start
 
 #ifdef TGUI_TGUI_HPP
 
@@ -124,11 +124,10 @@ namespace GF
 
 #endif
 
-		for (auto w : widget_names) {
-			GF::Widget* widget = widgets[w];
+		for (auto& widget : widgets) {
 
-			if (!widget->update(fElapsedTime, fTotalTime) ||
-			    !widget->draw())
+			if (!widget.second->update(fElapsedTime, fTotalTime) ||
+			    !widget.second->draw())
 				should_exit = true;
 		}
 
@@ -137,7 +136,7 @@ namespace GF
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 		// updates and draws entities of the game
-		if (!sm.onUpdate(fElapsedTime, fTotalTime) || !sm.onDraw())
+		if (!states.onUpdate(fElapsedTime, fTotalTime) || !states.onDraw())
 			should_exit = true;
 
 		fps.draw();
@@ -148,20 +147,11 @@ namespace GF
 		if (name == "")
 			name = widgets.size();
 
-		widget_names.push_back(name);
 		widgets.insert(std::pair<std::string, GF::Widget*>(name, widget));
 	}
 
 	void Game::deleteWidget(const std::string name)
 	{
-
-		auto end = std::remove_if(widget_names.begin(), widget_names.end(),
-		[name](std::string const & n) {
-			return n == name; // removes if mouse position is inside circle boundaries
-		});
-
-		widget_names.erase(end, widget_names.end());
-
 		if (widgets.find(name) != widgets.end()) {
 			delete widgets[name];
 			widgets.erase(name);
@@ -170,8 +160,6 @@ namespace GF
 
 	void Game::clearWidgets()
 	{
-		widget_names.clear();
-
 		for (auto& widget : widgets)
 			delete widget.second;
 

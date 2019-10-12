@@ -9,17 +9,11 @@
 namespace GF
 {
 
-	class Game : public NonCopyable, public NonMovable
+	class Game : public NonCopyable, public NonMovable, protected State
 	{
 	public:
 
-		Game() : fps(&window), max_fps(-1), should_exit(false)
-		{
-#ifdef TGUI_TGUI_HPP
-			gui.setTarget(window);
-#endif
-		}
-
+		Game();
 		~Game();
 
 		void setMaxFPS(int frames = 60);
@@ -29,7 +23,7 @@ namespace GF
 	protected:
 		std::string title = "Window";
 		sf::RenderWindow window;
-		GF::StateMachine sm;
+		GF::StateMachine states;
 
 #ifdef TGUI_TGUI_HPP
 		tgui::Gui gui;
@@ -58,15 +52,7 @@ namespace GF
 		GF::Event::EventType pollEvents(GF::Event& event);
 		void handleEvent(GF::Event& event);
 		void update();
-
-		// for user to create
-		virtual bool onCreate() = 0;
-		virtual bool onHandleEvent(GF::Event& event) = 0;
-		virtual bool onUpdate(const float fElapsedTime, const float fTotalTime) = 0;
-		virtual bool onDraw() = 0;
-		virtual void onDestroy() = 0;
-
-
+	
 	private:
 		GF::FPSCounter fps;
 		int max_fps;

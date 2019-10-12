@@ -15,35 +15,35 @@ namespace GF
 
 		bool handleEvent(GF::Event& event)
 		{
-			return top.handleEvent(event);
+			return mStack.top()->onHandleEvent(event);
 		}
 
 		bool update(float fElapsedTime, float fTotalTime)
 		{
-			State top = mStack.top();
-			return top.update(fElapsedTime, fTotalTime);
+			return mStack.top()->onUpdate(fElapsedTime, fTotalTime);
 		}
 
 		bool draw()
 		{
-			State top = mStack.top();
-			return top.draw()
+			return mStack.top().onDraw()
 		}
 
-		void push(Istate* state)
+		bool push(Istate* state)
 		{
 			mStack.push(state);
+
+			if (activeStates.insert(std::pair<std::string, State*>(stateName, state)).second)
+				return mCurrentState->onCreate();
+			else
+				return true;
 		}
 
 		State* pop()
 		{
 			State* p = nullptr;
 
-			if (!empty()) {
-				mStack.top()->onExit();
-				State* p = mStack.pop();
-				mStack.top()->onCreate();
-			}
+			if (!empty())
+				p = mStack.pop();
 
 			return p;
 		}
@@ -55,5 +55,6 @@ namespace GF
 
 	private:
 		std::stack<State*> mStack;
+		std::map<std::string, State*> activeStates;
 	};
 }
