@@ -40,13 +40,10 @@ namespace GF
 		inline float getFPS() const { return fps.getFPS(); }
 		inline float getMaxFPS() const { return fps.getMaxFPS(); }
 
-		// template<class T, typename Function>
-		// void addKeyListener(Function&& fn) const
-		// {
-		// 	keyListeners.push_back(std::forward<Function>(fn));
-		// }
-		// std::vector<void(*)()> keyListeners;
-
+		void addEventListener(GF::Event::EventType event, void *(*func) (void*), void* args)
+		{
+			eventListeners.push_back(std::make_tuple(event, func, args));
+		}
 
 	private:
 		GF::Event::EventType pollEvents(GF::Event& event);
@@ -65,5 +62,6 @@ namespace GF
 		std::map<std::string, GF::Widget*> widgets;
 		std::vector<std::string> widget_names;
 
+		std::vector<std::tuple<GF::Event::EventType, void *(*) (void*), void*>> eventListeners;
 	};
 }

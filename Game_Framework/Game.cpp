@@ -108,6 +108,11 @@ namespace GF
 			should_exit = true;
 
 		fps.handleEvent(event);
+
+		for (unsigned i = 0; i < eventListeners.size(); ++i) {
+			if (event.type == std::get<0>(eventListeners[i]))
+				std::get<1>(eventListeners[i])(std::get<2>(eventListeners[i]));
+		}
 	}
 
 	void Game::update()

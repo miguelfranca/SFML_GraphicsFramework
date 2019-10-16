@@ -46,6 +46,10 @@ namespace GF
 
 		bool showfps = true;
 
+		unsigned m_frameCount = 0;
+
+		sf::Clock m_timer;
+
 	private:
 		// calculates fps
 		void update();

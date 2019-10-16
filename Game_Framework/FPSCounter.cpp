@@ -5,7 +5,7 @@
 namespace GF
 {
 
-	FPSCounter::FPSCounter(sf::RenderTarget* renderer) : text(sf::Vector2f(0, 0), 15, sf::Color::White)
+	FPSCounter::FPSCounter(sf::RenderTarget* renderer) : text(sf::Vector2f(0, 0), 15 * SW, sf::Color::White)
 	{
 		m_target = renderer;
 	}

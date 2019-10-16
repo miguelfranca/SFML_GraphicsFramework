@@ -32,9 +32,6 @@ namespace GF {
 		m_text.setCenter(MIDDLELEFT);
 		m_text.setPosition(sf::Vector2f(pos.x - size.x / 2 + 10 * SW, pos.y));
 		m_text.setFillColor(sf::Color(192, 192, 192));
-
-		while(m_text.getLocalBounds().width + 20 * SW >= writing.getGlobalBounds().width)
-			m_text.setCharacterSize(m_text.getCharacterSize() - 1);
 		
 		writing.setText(m_text);
 	}
