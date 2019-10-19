@@ -16,7 +16,7 @@ public:
 	double 		  getN 		(double mean = 0., double sigma = 1.);
 
 	inline unsigned getSeed() const 		{ return m_seed; }
-	inline void 	setSeed(unsigned seed)	{ generator.seed(seed); }
+	inline void 	setSeed(unsigned seed)	{ m_seed = seed; generator.seed(m_seed); }
 
 private:
 	unsigned m_seed;
