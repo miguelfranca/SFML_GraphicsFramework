@@ -41,7 +41,7 @@ namespace GF
 		m_fps = 1. / elapsedTime;
 
 		// update fps text every 'DISPLAY_FREQ' seconds
-		if (display_counter % (int)(max_frame_count * DISPLAY_FREQ) == 0) {
+		if (m_fps < DISPLAY_FREQ || display_counter % (int)(m_fps / DISPLAY_FREQ) == 0) {
 			text.setString("FPS " + std::to_string((int)m_fps));
 			display_counter = 0;
 		}

@@ -4,7 +4,7 @@
 #include "holders/Widget.h"
 #include "sfml/Text.h"
 
-#define DISPLAY_FREQ 0.1  // seconds
+#define DISPLAY_FREQ 20.f  // seconds^-1
 
 namespace GF
 {
