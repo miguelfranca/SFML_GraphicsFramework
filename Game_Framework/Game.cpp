@@ -90,8 +90,8 @@ namespace GF
 		if (!states.onHandleEvent(event))
 			should_exit = true;
 
-		for (auto& widget : widgets) {
-			if (!widget.second->handleEvent(event))
+		for (auto& widget : widget_names) {
+			if (!widgets[widget]->handleEvent(event))
 				should_exit = true;
 		}
 
@@ -129,10 +129,10 @@ namespace GF
 
 #endif
 
-		for (auto& widget : widgets) {
+		for (auto& widget : widget_names) {
 
-			if (!widget.second->update(fElapsedTime, fTotalTime) ||
-			    !widget.second->draw())
+			if (!widgets[widget]->update(fElapsedTime, fTotalTime) ||
+			    !widgets[widget]->draw())
 				should_exit = true;
 		}
 
@@ -153,6 +153,7 @@ namespace GF
 			name = widgets.size();
 
 		widgets.insert(std::pair<std::string, GF::Widget*>(name, widget));
+		widget_names.push_back(name);
 	}
 
 	void Game::deleteWidget(const std::string name)
@@ -160,6 +161,10 @@ namespace GF
 		if (widgets.find(name) != widgets.end()) {
 			delete widgets[name];
 			widgets.erase(name);
+
+			auto it = std::find_if(widget_names.begin(), widget_names.end(),
+			[&name](std::string element) { return element == name;});
+			widget_names.erase(it);
 		}
 	}
 
@@ -169,6 +174,7 @@ namespace GF
 			delete widget.second;
 
 		widgets.clear();
+		widget_names.clear();
 	}
 
 	GF::Widget* Game::getWidget(const std::string name)

@@ -48,7 +48,7 @@ namespace GF
 
 		unsigned m_frameCount = 0;
 
-		sf::Clock m_timer;
+		sf::Clock m_inBetween;
 
 	private:
 		// calculates fps
