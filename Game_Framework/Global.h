@@ -22,7 +22,7 @@ const unsigned SCREENWIDTH = (int)(1280.f * SW);
 const unsigned SCREENHEIGHT = (int)(720.f * SH);
 
 // text
-#define DEFAULT_CHAR_SIZE 30
+#define DEFAULT_CHAR_SIZE 20 * SW
 #define DEFAULT_FONT "res/fonts/Arial.ttf"
 #define DEFAULT_CHAR_COLOR sf::Color::White
 
@@ -33,6 +33,7 @@ const unsigned SCREENHEIGHT = (int)(720.f * SH);
 #define TOPLEFT_F sf::Vector2f(0.f, 0.f)
 #define CENTER_WINDOW sf::Vector2f((float)SCREENWIDTH / 2, (float)SCREENHEIGHT / 2)
 const sf::Vector2i CENTER_SCREEN = sf::Vector2i(sf::VideoMode::getDesktopMode().width / 2 - SCREENWIDTH / 2, sf::VideoMode::getDesktopMode().height / 2 - SCREENHEIGHT / 2);
+#define SCALE_2F sf::Vector2f(SW, SH)
 
 #define SFML_VERSION_GT(MAJOR,MINOR,PATCH) (SFML_VERSION_MAJOR>=MAJOR && SFML_VERSION_MINOR>=MINOR && SFML_VERSION_PATCH>=PATCH)
 
