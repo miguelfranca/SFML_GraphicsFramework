@@ -3,6 +3,7 @@
 #include "Game_Framework/holders.h"
 
 #include <map>
+#include <functional>
 
 namespace GF
 {
@@ -22,9 +23,14 @@ namespace GF
 		void add(std::string name, State* state);
 		void deleteState(const std::string stateName);
 
+		void checkSwitchState();
+		
 	private:
 		std::map<std::string, State*> activeStates;
 		std::map<std::string, State*> mStates;
 		State* mCurrentState;
+		std::string mCurrentStateName;
+		std::string lastState;
+		bool readyToSwitch;
 	};
 }

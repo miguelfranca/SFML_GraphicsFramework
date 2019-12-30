@@ -15,6 +15,17 @@ namespace GF
 		virtual bool onUpdate(float fElapsedTime, float fTotalTime) = 0;
 		virtual bool onDraw() = 0;
 		virtual void onDestroy() = 0;
+		virtual void onSwitch(std::string) = 0;
+		
+		inline std::vector<std::tuple<GF::Event::EventType, void* (*)(GF::Event&, void*), void*>> getEventListeners() const { return eventListeners; }
+
+	protected:
+		void addEventListener(GF::Event::EventType event, void* (*func)(GF::Event&, void*), void* args = NULL)
+		{
+			eventListeners.push_back(std::make_tuple(event, func, args));
+		}
+	private:
+		std::vector<std::tuple<GF::Event::EventType, void* (*)(GF::Event&, void*), void*>> eventListeners;
 	};
 
 	class StateMachine;
@@ -36,6 +47,8 @@ namespace GF
 		bool onDraw() override { return true; }
 
 		void onDestroy() override { }
+
+		void onSwitch(std::string) override { }
 
 	protected:
 		StateMachine* states;

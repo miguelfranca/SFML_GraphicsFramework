@@ -7,9 +7,6 @@ namespace GF
 {
 	Game::Game() : fps(&window), max_fps(-1), should_exit(false)
 	{
-#ifdef TGUI_TGUI_HPP
-		gui.setTarget(window);
-#endif
 		states.add("home", this);
 	}
 
@@ -33,6 +30,19 @@ namespace GF
 		//fps.setMaxFPS(max_fps); // cannot set this before sfml window is created
 	}
 
+	void Game::setupWindow(unsigned sizex, unsigned sizey, unsigned x, unsigned y, int style)
+	{
+		SCREENWIDTH = sizex;
+		SCREENHEIGHT = sizey;
+
+		if (window.getSize() != sf::Vector2u(sizex, sizey)) {
+			if (window.isOpen()) window.close();
+
+			window.create(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT), title, style);
+			window.setPosition(sf::Vector2i(x, y));
+		}
+	}
+
 	void Game::run()
 	{
 		begin.restart();
@@ -45,9 +55,6 @@ namespace GF
 
 		fps.setMaxFPS(max_fps);
 
-#ifdef TGUI_TGUI_HPP
-		gui.setView(window.getView());
-#endif
 
 		// initializes the game. 'onCreate' gets called automatically when a new state is added. Exits if any error occured
 		if (!states.onCreate())
@@ -57,11 +64,11 @@ namespace GF
 
 		//////////// MAIN LOOP /////////////
 		while (window.isOpen()) {
-			pollEvents(event); // polls the event from the event queue
+			if(!should_exit) pollEvents(event); // polls the event from the event queue
 
-			handleEvent(event); // handles the event
+			if(!should_exit) handleEvent(event); // handles the event
 
-			update(); // clears the window, updates and draws the entities
+			if(!should_exit) update(); // clears the window, updates and draws the entities
 
 			window.display(); // displays everything into the window
 
@@ -87,32 +94,26 @@ namespace GF
 	void Game::handleEvent(GF::Event& event)
 	{
 		// handle game events
-		if (!states.onHandleEvent(event))
+		if (!states.onHandleEvent(event)) {
 			should_exit = true;
-
-		for (auto& widget : widget_names) {
-			if (!widgets[widget]->handleEvent(event))
-				should_exit = true;
+			return;
 		}
 
-#ifdef TGUI_TGUI_HPP
-
-		if (gui.getWidgets().size() != 0)
-			gui.handleEvent(event);
-
-#endif
+		for (auto& widget : widget_names) {
+			if (!widgets[widget]->handleEvent(event)) {
+				should_exit = true;
+				return;
+			}
+		}
 
 		// closing window events - X button on window or esc on keyboard
 		if (event.type == GF::Event::Closed || (event.type == GF::Event::KeyPressed
-		                                        && event.key.code == sf::Keyboard::Escape))
+		                                        && event.key.code == sf::Keyboard::Escape)) {
 			should_exit = true;
+			return;
+		}
 
 		fps.handleEvent(event);
-
-		for (unsigned i = 0; i < eventListeners.size(); ++i) {
-			if (event.type == std::get<0>(eventListeners[i]))
-				std::get<1>(eventListeners[i])(std::get<2>(eventListeners[i]));
-		}
 	}
 
 	void Game::update()
@@ -122,18 +123,13 @@ namespace GF
 		float fElapsedTime = fps.getElapsedTime(); // time between frames
 		float fTotalTime = begin.getElapsedTime().asSeconds(); // time since start
 
-#ifdef TGUI_TGUI_HPP
-
-		if (gui.getWidgets().size() != 0)
-			gui.draw();
-
-#endif
-
 		for (auto& widget : widget_names) {
 
 			if (!widgets[widget]->update(fElapsedTime, fTotalTime) ||
-			    !widgets[widget]->draw())
+			    !widgets[widget]->draw()) {
 				should_exit = true;
+				return;
+			}
 		}
 
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -141,10 +137,16 @@ namespace GF
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 		// updates and draws entities of the game
-		if (!states.onUpdate(fElapsedTime, fTotalTime) || !states.onDraw())
+		if (!states.onUpdate(fElapsedTime, fTotalTime) || !states.onDraw()){
 			should_exit = true;
+			return;
+		}
 
 		fps.draw();
+	}
+
+	void Game::exitApp(){
+		should_exit = true;
 	}
 
 	void Game::addWidget(GF::Widget* widget, std::string name)
@@ -182,8 +184,10 @@ namespace GF
 		if (widgets.find(name) != widgets.end()) {
 			return widgets[name];
 		}
-		else
+		else {
+			std::cout << name << " not found." << std::endl;
 			return nullptr;
+		}
 	}
 
 	void Game::setClearColor(const sf::Color color)

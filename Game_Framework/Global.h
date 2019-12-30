@@ -7,19 +7,12 @@
 #endif
 #define MIN_PI 3.14f;
 
-#define For0(b) for(unsigned i = 0; i < b; ++i)
-#define For1(b, c) for(unsigned b = 0; b < c; ++b)
-#define ForFor(b, c) for(unsigned i = 0; i < b; ++i) for(unsigned j = 0; j < c; ++j)
-#define ForFor2(i, b, j, c) for(unsigned i = 0; i < b; ++i) for(unsigned j = 0; j < c; ++j)
-#define For2(i, b) for(unsigned i = 0; i < b; ++i)
-#define For3(i, a, b) for(int i = a; i < b; ++i)
-#define For4(i, a, b, c) for(int i = a; i < b; i += c)
-
 // window
-const float SW = sf::VideoMode::getDesktopMode().width / 1920.f; // scale width
-const float SH = sf::VideoMode::getDesktopMode().height / 1080.f; // scale height
-const unsigned SCREENWIDTH = (int)(1280.f * SW);
-const unsigned SCREENHEIGHT = (int)(720.f * SH);
+extern float SW; // scale width
+extern float SH; // scale height
+
+extern unsigned SCREENWIDTH;
+extern unsigned SCREENHEIGHT;
 
 // text
 #define DEFAULT_CHAR_SIZE 20 * SW
@@ -38,4 +31,19 @@ const sf::Vector2i CENTER_SCREEN = sf::Vector2i(sf::VideoMode::getDesktopMode().
 #define SFML_VERSION_GT(MAJOR,MINOR,PATCH) (SFML_VERSION_MAJOR>=MAJOR && SFML_VERSION_MINOR>=MINOR && SFML_VERSION_PATCH>=PATCH)
 
 // colors
-#define GRAY sf::Color(128, 128, 128)
+#define BLACK 	sf::Color(0,0,0)
+#define WHITE 	sf::Color(255,255,255)
+#define RED		sf::Color(255,0,0)
+#define LIME 	sf::Color(0,255,0)
+#define BLUE 	sf::Color(0,0,255)
+#define YELLOW 	sf::Color(255,255,0)
+#define CYAN 	sf::Color(0,255,255)
+#define MAGENTA sf::Color(255,0,255)
+#define SILVER 	sf::Color(192,192,192)
+#define GRAY 	sf::Color(128,128,128)
+#define MAROON 	sf::Color(128,0,0)
+#define OLIVE 	sf::Color(128,128,0)
+#define GREEN 	sf::Color(0,128,0)
+#define PURPLE 	sf::Color(128,0,128)
+#define TEAL 	sf::Color(0,128,128)
+#define NAVY 	sf::Color(0,0,128)

@@ -1,21 +1,22 @@
 #include "Textbox.h"
 #include "Game_Framework/Tools/Random.hpp"
+#include <string>
 
 namespace GF {
 
-	TextBox::TextBox(sf::RenderTarget* renderer) : writing(renderer, sf::Vector2f(0, 0)) {
+	Textbox::Textbox(sf::RenderTarget* renderer) : writing(renderer, sf::Vector2f(0, 0)) {
 		setup(sf::Vector2f(200, 50), CENTER_WINDOW, "Search");
 		if (m_target == nullptr)
 			m_target = renderer;
 	}
 
-	TextBox::TextBox(sf::Vector2f size, sf::Vector2f pos, std::string _init_text,
+	Textbox::Textbox(sf::Vector2f size, sf::Vector2f pos, std::string _init_text,
 		sf::RenderTarget* renderer) : writing(renderer, sf::Vector2f(0, 0)){
 		m_target = renderer;
 		setup(size, pos, _init_text);
 	}
 
-	void TextBox::setup(sf::Vector2f size, sf::Vector2f pos, std::string _init_text) {
+	void Textbox::setup(sf::Vector2f size, sf::Vector2f pos, std::string _init_text) {
 		size.x *= SW;
 		size.y *= SH;
 
@@ -36,18 +37,18 @@ namespace GF {
 		writing.setText(m_text);
 	}
 
-	bool TextBox::handleEvent(GF::Event & event)
+	bool Textbox::handleEvent(GF::Event & event)
 	{
 		handleClick(event);
 		handleTextInput(event);
 		return true;
 	}
 
-	bool TextBox::draw()
+	bool Textbox::draw()
 	{
 		writing.draw();
 
-		// Flashing line after text. Only draws for 500ms every 1000ms (1 second)
+		// Flashing line after text (cursor). Only draws for 500ms every 1000ms (1 second)
 		static sf::Clock clk;
 		if (m_isActive && clk.getElapsedTime().asMilliseconds() > 500 && !textIsSelected)
 			m_target->draw(line, sf::RenderStates::Default);
@@ -55,7 +56,7 @@ namespace GF {
 		return true;
 	}
 
-	bool TextBox::update(const float fElapsedTime, const float fTotalTime) {
+	bool Textbox::update(const float fElapsedTime, const float fTotalTime) {
 		// updates the flashing line after the text. Only updates when the text is not selected, because it is only drawn when that happens
 		if (!textIsSelected) {
 			sf::FloatRect rec = m_text.getLocalBounds();
@@ -65,17 +66,19 @@ namespace GF {
 		return true;
 	}
 
-	void TextBox::setPosition(const sf::Vector2f pos)
+	void Textbox::setPosition(const sf::Vector2f pos)
 	{
 		writing.setPos(pos);
 	}
 
-	void TextBox::handleClick(GF::Event & event)
+	void Textbox::handleClick(GF::Event & event)
 	{
 		static GF::ToggleKey C(sf::Keyboard::C);
 		static GF::ToggleKey V(sf::Keyboard::V);
 		static GF::ToggleKey X(sf::Keyboard::X);
 		static GF::ToggleKey A(sf::Keyboard::A);
+		static GF::ToggleKey Right(sf::Keyboard::Right);
+		static GF::ToggleKey Left(sf::Keyboard::Left);
 
 		// CTRL + C / X to copy to clipboard (LCONTROL/RCONTROL + C/X)
 		if (event.key.control && (C.isKeyReleasedOnce(event) || X.isKeyPressedOnce(event)) && textIsSelected) {
@@ -144,19 +147,20 @@ namespace GF {
 		}
 	}
 
-	void TextBox::setTextSelected() {
+	void Textbox::setTextSelected() {
 		m_text.setFillColor(sf::Color(0, 0, 205));
 		textIsSelected = true;
 		writing.setText(m_text);
 	}
 
-	void TextBox::setTextNotSelected() {
+	void Textbox::setTextNotSelected() {
 		textIsSelected = false;
 		writing.setText(m_text);
 	}
 
-	void TextBox::handleTextInput(GF::Event& event)
+	void Textbox::handleTextInput(GF::Event& event)
 	{
+		enterEventFlag = false;
 		if (m_isActive) {
 			if (event.type == GF::Event::TextEntered) {
 				// Get the key that was entered
@@ -175,6 +179,8 @@ namespace GF {
 					m_text.setFillColor(sf::Color::White);
 					setTextNotSelected();
 				}
+
+				if(sf::Keyboard::isKeyPressed(sf::Keyboard::Enter)) enterEventFlag = true;
 
 				if (isValidCharacter(keyCode)) {
 					// if everything is ok, just add the letter to the string
@@ -196,7 +202,7 @@ namespace GF {
 	/*Recursive function for the displayed text.
 	Used to only display the part of the text that is inside the textbox.
 	Keeps the "origin" at the last written letter so, the first letters, as soon as the text doesnt fit the textbox, will disapear*/
-	void TextBox::setText(const std::string str) {
+	void Textbox::setText(const std::string str) {
 		m_text.setString(str);
 		if (m_text.getLocalBounds().width + 20 * SW >= writing.getGlobalBounds().width) {
 			std::string s = m_text.getString().toAnsiString().erase(0, 1);
@@ -204,7 +210,7 @@ namespace GF {
 		}
 	}
 
-	bool TextBox::isValidCharacter(unsigned char keyCode)
+	bool Textbox::isValidCharacter(unsigned char keyCode)
 	{
 		//return  keyCode >= 48 && keyCode <= 57 ||  //Numbers
 		//	keyCode >= 65 && keyCode <= 90 ||  //Uppercase
@@ -213,13 +219,13 @@ namespace GF {
 		return keyCode >= 32 && keyCode <= 126; // all normal characters and special characters too
 	}
 
-	bool TextBox::isBackspace(unsigned char keycode)
+	bool Textbox::isBackspace(unsigned char keycode)
 	{
 		return keycode == 8;
 	}
 
-	GF::TextBox* GF::TextBox::makeRandom(sf::RenderTarget* renderer) {
-		return new GF::TextBox(
+	GF::Textbox* GF::Textbox::makeRandom(sf::RenderTarget* renderer) {
+		return new GF::Textbox(
 			sf::Vector2f(Rand.getU(100 * SW, SCREENWIDTH / 2.f), Rand.getU(20 * SH, 70 * SH)),
 			sf::Vector2f(Rand.getU(SCREENWIDTH / 4.f, SCREENWIDTH * 3.f / 4.f), Rand.getU(SCREENHEIGHT / 4.f, SCREENHEIGHT * 3.f / 4.f)),
 			"Search", renderer);

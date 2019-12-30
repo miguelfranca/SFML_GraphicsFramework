@@ -37,6 +37,9 @@ namespace GF {
 		void draw(sf::RenderTarget& renderer, sf::RenderStates state) const;
 
 		float angleBetween(GF::Line& line);
+
+		void move(const sf::Vector2f); 
+		
 		sf::VertexArray line;
 	};
 }

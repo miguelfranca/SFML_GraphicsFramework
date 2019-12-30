@@ -10,4 +10,8 @@ namespace GF {
 		x.draw(renderer, state);
 		return true;
 	}
+
+	bool draw(sf::RenderTarget& renderer, sf::RenderStates state, GF::Widget& x) {
+		return x.draw();
+	}
 }

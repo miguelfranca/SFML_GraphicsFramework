@@ -3,14 +3,16 @@
 #include "Button.h"
 #include "../holders/Widget.h"
 
-namespace GF {
-	class TextBox : public Widget {
+namespace GF
+{
+	class Textbox : public Widget
+	{
 	public:
 
-		TextBox(sf::RenderTarget* renderer = nullptr);
+		Textbox(sf::RenderTarget* renderer = nullptr);
 
-		TextBox(sf::Vector2f size, sf::Vector2f pos = CENTER_WINDOW, std::string _init_text = "Search",
-			sf::RenderTarget* renderer = nullptr);
+		Textbox(sf::Vector2f size, sf::Vector2f pos = CENTER_WINDOW, std::string _init_text = "Search",
+		        sf::RenderTarget* renderer = nullptr);
 
 		// handles text and mouse input events
 		bool handleEvent(GF::Event& event) override;
@@ -20,18 +22,21 @@ namespace GF {
 
 		void setPosition(const sf::Vector2f pos);
 
-		// draws the button and line ( the Button class already has a text member variable, so when drawing the box the text is also drawn) 
+		// draws the button and line ( the Button class already has a text member variable, so when drawing the box the text is also drawn)
 		bool draw() override;
 
 		inline std::string getText() const { return text; }
+		inline bool enterEvent() const { return enterEventFlag; }
 
-		static GF::TextBox* makeRandom(sf::RenderTarget* renderer);
+		static GF::Textbox* makeRandom(sf::RenderTarget* renderer);
 
 
 	private:
 
 		// setup the button and text variables
 		void setup(sf::Vector2f size, sf::Vector2f pos, std::string _init_text);
+
+		void moveCursor(int sign, char c);
 
 		void handleClick(GF::Event& event);
 		void handleTextInput(GF::Event& event);
@@ -47,10 +52,12 @@ namespace GF {
 		Button<GF::Rectangle> writing;
 
 		GF::Text m_text;
-		std::string text;
+		std::string text = "";
 		GF::Line line;
 
 		bool textIsSelected = false;
+
+		bool enterEventFlag = false;
 
 	private:
 		void setText(const std::string str);

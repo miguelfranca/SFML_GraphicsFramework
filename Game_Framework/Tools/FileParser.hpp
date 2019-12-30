@@ -5,7 +5,7 @@ Currently only compatible with single parameters (doesn't read vectors from line
 	(the reason why I didn't implement this is because it is 'easy' for numbers but hard to generalize for nay template class)
 Usage:
 	FileParser fp("params.txt",true);
-	
+
 	type t;
 	//option 1
 	fp("name",t,default_value);
@@ -22,20 +22,26 @@ Usage:
 #include <string>
 #include "Tools.hpp"
 
-class FileParser{
+class FileParser
+{
 public:
-	FileParser(const std::string& p_name, bool p_verbose = false, char p_setter = '='): 
+	FileParser(const std::string& p_name, bool p_verbose = false, char p_setter = '='):
 		name(p_name), open(true), setter(p_setter), verbose(p_verbose)
 	{
 		file.open(name, std::ios::in);
-		if(!file){
-			print("File ",name," not found");
+
+		if (!file) {
+			print("File ", name, " not found");
 			open = false;
 		}
 	}
 
+	~FileParser() { file.close(); }
+
 	template <typename T>
 	bool get(const std::string& id, T& var);
+	template<typename T>
+	bool get(const std::string& id, std::vector<T>& var);
 	template <typename T>
 	bool operator()(const std::string& id, T& var);
 
@@ -49,7 +55,7 @@ public:
 	template <typename T>
 	T get(const std::string& id, const T& def = T());
 
-	inline bool isOpen(){ return open; }
+	inline bool isOpen() { return open; }
 
 private:
 	std::string name;	//save name of file (for printing purposes)

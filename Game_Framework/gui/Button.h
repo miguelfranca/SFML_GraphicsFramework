@@ -10,7 +10,7 @@ namespace GF {
 	class Button : public Widget, public T{
 	public:
 		Button(sf::RenderTarget* renderer = nullptr, 
-			float size = sf::Vector2f(0, 0), 
+			float size = 0., 
 			const sf::Color text = sf::Color::White,
 			const sf::Color outline = sf::Color::Green,
 			const sf::Color fill = sf::Color::Black,

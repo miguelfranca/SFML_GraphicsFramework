@@ -3,8 +3,7 @@
 #include "FPSCounter.h"
 #include "StateMachine.h"
 #include "sfml/Event.h"
-
-#include <functional>
+#include <SFML/Window.hpp>
 
 namespace GF
 {
@@ -19,17 +18,15 @@ namespace GF
 		void setMaxFPS(int frames = 60);
 		void showFPS(bool);
 		void run();
+		void exitApp();
 
 	protected:
 		std::string title = "Window";
 		sf::RenderWindow window;
 		GF::StateMachine states;
 
-#ifdef TGUI_TGUI_HPP
-		tgui::Gui gui;
-#endif
-
 	protected:
+
 		void addWidget(GF::Widget* widget, std::string name = "");
 		void clearWidgets();
 		inline void deleteWidget(const std::string name);
@@ -40,16 +37,13 @@ namespace GF
 		inline float getFPS() const { return fps.getFPS(); }
 		inline float getMaxFPS() const { return fps.getMaxFPS(); }
 
-		void addEventListener(GF::Event::EventType event, void *(*func) (void*), void* args)
-		{
-			eventListeners.push_back(std::make_tuple(event, func, args));
-		}
-
+		void setupWindow(unsigned sizex, unsigned sizey, unsigned x = 0, unsigned y = 0, int style = 0);
+		
 	private:
 		GF::Event::EventType pollEvents(GF::Event& event);
 		void handleEvent(GF::Event& event);
 		void update();
-	
+
 	private:
 		GF::FPSCounter fps;
 		int max_fps;
@@ -61,7 +55,5 @@ namespace GF
 
 		std::map<std::string, GF::Widget*> widgets;
 		std::vector<std::string> widget_names;
-
-		std::vector<std::tuple<GF::Event::EventType, void *(*) (void*), void*>> eventListeners;
 	};
 }

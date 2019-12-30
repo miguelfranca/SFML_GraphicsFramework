@@ -2,19 +2,23 @@
 
 #include <string>
 #include "../Global.h"
-#include <filesystem>
+#include <experimental/filesystem>
 #include <fstream>
 
-namespace GF {
-	class File {
-	public:
-		static void replaceAllInFile(std::string file, std::string toReplace, std::string newStr);
-		static void replaceInFile(std::string file, std::string toReplace, std::string newStr, int position);
-		static void replaceLineInFile(std::string file, std::string toReplace, int position);
-		static void copyTo_From(std::string to, std::string from);
-		static void deleteFromFile(std::string file, std::string todelete);
-		static void put_in_file(std::string file, std::string str);
-		static void directory_iterator(std::string directory);
-		static void createFile(std::string file);
-	};
+namespace GF
+{
+	void replaceAllInFile(std::string file, std::string toReplace, std::string newStr);
+	void replaceInFile(std::string file, std::string toReplace, std::string newStr, int position);
+	void replaceLineInFile(std::string file, std::string toReplace, int position);
+	void copyTo_From(std::string to, std::string from);
+	void deleteFromFile(std::string file, std::string todelete);
+	void put_in_file(std::string file, std::string str);
+	std::vector<std::string> directory_iterator(const std::string& directory);
+	void createFile(std::string file);
+	void moveFile(std::string old_path, std::string new_path);
+	inline bool existsFile(const std::string& name)
+	{
+		std::ifstream f(name.c_str());
+		return f.good();
+	}
 }
