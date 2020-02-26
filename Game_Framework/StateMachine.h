@@ -19,9 +19,9 @@ namespace GF
 		bool onDraw();
 		void onDestroy();
 
-		bool change(const std::string stateName, State* state = nullptr);
-		void add(std::string name, State* state);
-		void deleteState(const std::string stateName);
+		bool change(const std::string& stateName, State* state = nullptr);
+		void add(const std::string& name, State* state);
+		void deleteState(const std::string& stateName);
 
 		void checkSwitchState();
 		

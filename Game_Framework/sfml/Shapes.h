@@ -21,7 +21,7 @@ namespace GF {
 	class Circle : public sf::CircleShape {
 	public:
 		Circle(){}
-		Circle(float radius, sf::Vector2f pos = TOPLEFT_F, sf::Color fill = sf::Color::White, sf::Color outline = sf::Color::Transparent, float thickness = 0);
+		Circle(float radius, sf::Vector2f pos = TOPLEFT_F, sf::Color fill = sf::Color::White, sf::Color outline = sf::Color::Transparent, float thickness = 1);
 		bool isColliding(GF::Circle& other);
 		bool contains(sf::Vector2f, float threshold = 0.);
 		bool isRolledOn(const sf::RenderWindow& window, float threshold = 0.f) const;

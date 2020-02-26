@@ -20,6 +20,7 @@ Usage:
 
 #include <fstream>
 #include <string>
+#include <vector>
 #include "Tools.hpp"
 
 class FileParser

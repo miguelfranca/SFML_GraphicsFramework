@@ -36,9 +36,13 @@ namespace GF
 
 		inline float getFPS() const { return fps.getFPS(); }
 		inline float getMaxFPS() const { return fps.getMaxFPS(); }
+		inline void setStaticScreen(const bool& s) { static_screen = s; }
 
 		void setupWindow(unsigned sizex, unsigned sizey, unsigned x = 0, unsigned y = 0, int style = 0);
-		
+		void setupWindow(sf::Vector2u size, unsigned x = 0, unsigned y = 0, int style = 0);
+		void setupWindow(unsigned sizex, unsigned sizey, sf::Vector2i position = TOPLEFT_I, int style = 0);
+		void setupWindow(sf::Vector2u size, sf::Vector2i position, int style = 0);
+
 	private:
 		GF::Event::EventType pollEvents(GF::Event& event);
 		void handleEvent(GF::Event& event);
@@ -52,6 +56,8 @@ namespace GF
 		sf::Color clear_color;
 
 		bool should_exit;
+
+		bool static_screen;
 
 		std::map<std::string, GF::Widget*> widgets;
 		std::vector<std::string> widget_names;

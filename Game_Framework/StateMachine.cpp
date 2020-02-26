@@ -5,8 +5,8 @@ namespace GF
 
 	StateMachine::StateMachine() : readyToSwitch(false)
 	{
-		mCurrentState = new EmptyState();
-		// mCurrentState = nullptr;
+		// mCurrentState = new EmptyState();
+		mCurrentState = nullptr;
 	}
 
 	bool StateMachine::onCreate()
@@ -46,11 +46,11 @@ namespace GF
 		mCurrentState->onDestroy();
 	}
 
-	bool StateMachine::change(const std::string stateName, State* state)
+	bool StateMachine::change(const std::string& stateName, State* state)
 	{
 		if (mStates.find(stateName) == mStates.end()) {
 			if (state == nullptr)
-				std::cout << "\n\""  << stateName << "\": State not found" << std::endl;
+				std::cerr << "\n\""  << stateName << "\": State is nullptr" << std::endl;
 			else
 				add(stateName, state);
 		}
@@ -61,6 +61,7 @@ namespace GF
 
 		// calls 'onCreate' function if it hasnt already been called.
 		// true if state doesnt already exist, false otherwise
+		// activeStates are the states that have been initialized (called onCreate())
 		if (activeStates.insert(std::pair<std::string, State*>(stateName, state)).second)
 			return mCurrentState->onCreate();
 		else {
@@ -69,17 +70,21 @@ namespace GF
 		}
 	}
 
-	void StateMachine::add(std::string name, State* state)
+	void StateMachine::add(const std::string& name, State* state)
 	{
+		if(mStates.find(name) != mStates.end())
+			std::cerr << "Inserting an already existing state... \"" << name << "\"" << std::endl;
+
 		mStates.insert(std::pair<std::string, State*>(name, state));
 
-		if (mCurrentState == nullptr && mStates.size() > 0) {
-			mCurrentState = mStates.begin()->second;
+		// if there are no states, the first one that is added will be the currentState
+		if (mStates.size() == 1) {
 			mCurrentStateName = mStates.begin()->first;
+			mCurrentState = mStates.begin()->second;
 		}
 	}
 
-	void StateMachine::deleteState(const std::string stateName)
+	void StateMachine::deleteState(const std::string& stateName)
 	{
 		auto it = mStates.find(stateName);
 

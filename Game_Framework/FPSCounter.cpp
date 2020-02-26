@@ -52,10 +52,11 @@ namespace GF
 	//Draws the FPS to the window
 	bool FPSCounter::draw()
 	{
+		update();
+		
 		if (!showfps)
 			return true;
 
-		update();
 		text.draw(*m_target, sf::RenderStates::Default);
 
 		return true;

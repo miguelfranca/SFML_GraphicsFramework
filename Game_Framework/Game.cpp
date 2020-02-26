@@ -5,7 +5,7 @@
 
 namespace GF
 {
-	Game::Game() : fps(&window), max_fps(-1), should_exit(false)
+	Game::Game() : fps(&window), max_fps(-1), should_exit(false), static_screen(false)
 	{
 		states.add("home", this);
 	}
@@ -43,6 +43,21 @@ namespace GF
 		}
 	}
 
+	void Game::setupWindow(sf::Vector2u size, unsigned x, unsigned y, int style)
+	{
+		setupWindow(size.x, size.y, x, y, style);
+	}
+
+	void Game::setupWindow(unsigned sizex, unsigned sizey, sf::Vector2i position, int style)
+	{
+		setupWindow(sizex, sizey, position.x, position.y, style);
+	}
+
+	void Game::setupWindow(sf::Vector2u size, sf::Vector2i position, int style)
+	{
+		setupWindow(size.x, size.y, position.x, position.y, style);
+	}
+
 	void Game::run()
 	{
 		begin.restart();
@@ -64,11 +79,13 @@ namespace GF
 
 		//////////// MAIN LOOP /////////////
 		while (window.isOpen()) {
-			if(!should_exit) pollEvents(event); // polls the event from the event queue
+			if (!static_screen) window.clear(clear_color);
 
-			if(!should_exit) handleEvent(event); // handles the event
+			if (!should_exit) pollEvents(event); // polls the event from the event queue
 
-			if(!should_exit) update(); // clears the window, updates and draws the entities
+			if (!should_exit) handleEvent(event); // handles the event
+
+			if (!should_exit) update(); // clears the window, updates and draws the entities
 
 			window.display(); // displays everything into the window
 
@@ -118,8 +135,6 @@ namespace GF
 
 	void Game::update()
 	{
-		window.clear(clear_color);
-
 		float fElapsedTime = fps.getElapsedTime(); // time between frames
 		float fTotalTime = begin.getElapsedTime().asSeconds(); // time since start
 
@@ -137,7 +152,7 @@ namespace GF
 		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 		// updates and draws entities of the game
-		if (!states.onUpdate(fElapsedTime, fTotalTime) || !states.onDraw()){
+		if (!states.onUpdate(fElapsedTime, fTotalTime) || !states.onDraw()) {
 			should_exit = true;
 			return;
 		}
@@ -145,7 +160,8 @@ namespace GF
 		fps.draw();
 	}
 
-	void Game::exitApp(){
+	void Game::exitApp()
+	{
 		should_exit = true;
 	}
 
