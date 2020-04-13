@@ -5,7 +5,7 @@
 
 namespace GF
 {
-	Game::Game() : fps(&window), max_fps(-1), should_exit(false), static_screen(false)
+	Game::Game() : fps(&window), should_exit(false), static_screen(false)
 	{
 		states.add("home", this);
 	}
@@ -26,8 +26,7 @@ namespace GF
 
 	void Game::setMaxFPS(int frames)
 	{
-		max_fps = frames;
-		//fps.setMaxFPS(max_fps); // cannot set this before sfml window is created
+		fps.setMaxFPS(frames); 
 	}
 
 	void Game::setupWindow(unsigned sizex, unsigned sizey, unsigned x, unsigned y, int style)
@@ -35,7 +34,9 @@ namespace GF
 		SCREENWIDTH = sizex;
 		SCREENHEIGHT = sizey;
 
-		if (window.getSize() != sf::Vector2u(sizex, sizey)) {
+		if ((window.getSize() != sf::Vector2u(sizex, sizey))
+		    && (window.getPosition() != sf::Vector2i(x, y))) {
+
 			if (window.isOpen()) window.close();
 
 			window.create(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT), title, style);
@@ -63,12 +64,11 @@ namespace GF
 		begin.restart();
 		should_exit = false;
 
-		if (!window.isOpen()) {
-			window.create(sf::VideoMode(SCREENWIDTH, SCREENHEIGHT), title);
-			window.setPosition(CENTER_SCREEN);
-		}
+		if (!window.isOpen())
+			setupWindow(CENTER_SCREEN.x, CENTER_SCREEN.y, CENTER_SCREEN.x / 2, CENTER_SCREEN.y / 2,
+			            sf::Style::Default);
 
-		fps.setMaxFPS(max_fps);
+		// fps.setMaxFPS(max_fps);
 
 
 		// initializes the game. 'onCreate' gets called automatically when a new state is added. Exits if any error occured
@@ -110,6 +110,8 @@ namespace GF
 
 	void Game::handleEvent(GF::Event& event)
 	{
+		static GF::ToggleKey ESC(sf::Keyboard::Escape);
+		
 		// handle game events
 		if (!states.onHandleEvent(event)) {
 			should_exit = true;
@@ -124,13 +126,10 @@ namespace GF
 		}
 
 		// closing window events - X button on window or esc on keyboard
-		if (event.type == GF::Event::Closed || (event.type == GF::Event::KeyPressed
-		                                        && event.key.code == sf::Keyboard::Escape)) {
+		if (event.type == GF::Event::Closed || ESC.isKeyPressed()) {
 			should_exit = true;
 			return;
 		}
-
-		fps.handleEvent(event);
 	}
 
 	void Game::update()

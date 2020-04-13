@@ -50,7 +50,6 @@ namespace GF
 
 	private:
 		GF::FPSCounter fps;
-		int max_fps;
 		sf::Clock begin;
 
 		sf::Color clear_color;
