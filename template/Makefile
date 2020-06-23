@@ -7,15 +7,12 @@
 ########## USER DEFINITIONS
 ##############################################################################################
 
-LIB_DIRS 	:= 	../../GraphicsFramework/GraphicsFramework \
-				../../GraphicsFramework/GraphicsFramework/sfml \
-				../../GraphicsFramework/GraphicsFramework/Tools\
-				../../GraphicsFramework/GraphicsFramework/holders \
-				../../GraphicsFramework/GraphicsFramework/gui \
-				../../GraphicsFramework \
-				../../GAcpp/NEAT/v2/Image \
-				../../GAcpp/NEAT/v2/Main \
-				../../GAcpp/GA/v3/GA
+LIB_DIRS 	:= 	../GraphicsFramework/GraphicsFramework \
+				../GraphicsFramework/GraphicsFramework/sfml \
+				../GraphicsFramework/GraphicsFramework/Tools\
+				../GraphicsFramework/GraphicsFramework/holders \
+				../GraphicsFramework/GraphicsFramework/gui \
+				../GraphicsFramework \
 				
 USER_FLAGS  := -Wall -Wextra -std=c++11 -Wno-unused-parameter -Wno-unused-function -fopenmp
 
