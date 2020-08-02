@@ -1,8 +1,8 @@
-﻿#include "Visualizer.h"
+﻿#include "Application.h"
 
 int main()
 {
-	App app;
+	Application app;
 	app.showFPS(false);
 	app.setMaxFPS(120);
 	app.run();
