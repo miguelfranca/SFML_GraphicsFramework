@@ -48,4 +48,6 @@ const sf::Vector2i CENTER_SCREEN = sf::Vector2i(sf::VideoMode::getDesktopMode().
 #define PURPLE 		sf::Color(128,0,128)
 #define TEAL 		sf::Color(0,128,128)
 #define NAVY 		sf::Color(0,0,128)
+#define ORANGE 		sf::Color(255,165,0)
+#define PINK		sf::Color(255,105,180)
 #define TRANSPARENT sf::Color::Transparent
