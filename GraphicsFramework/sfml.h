@@ -1,5 +1,6 @@
 #pragma once
 
+#include <SFML/Graphics.hpp>
 #include "sfml/Event.h"
 #include "sfml/Mouse.h"
 #include "sfml/Shapes.h"

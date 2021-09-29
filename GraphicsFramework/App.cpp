@@ -29,7 +29,8 @@ namespace GF
 		fps.setMaxFPS(frames);
 	}
 
-	void App::setupWindow(const unsigned sizex, const unsigned sizey, const unsigned x, const unsigned y, const int style)
+	void App::setupWindow(const unsigned sizex, const unsigned sizey, const unsigned x,
+	                      const unsigned y, const int style)
 	{
 		SCREENWIDTH = sizex;
 		SCREENHEIGHT = sizey;
@@ -49,7 +50,8 @@ namespace GF
 		setupWindow(size.x, size.y, x, y, style);
 	}
 
-	void App::setupWindow(const unsigned sizex, const unsigned sizey, const sf::Vector2i position, const int style)
+	void App::setupWindow(const unsigned sizex, const unsigned sizey, const sf::Vector2i position,
+	                      const int style)
 	{
 		setupWindow(sizex, sizey, position.x, position.y, style);
 	}
@@ -117,12 +119,12 @@ namespace GF
 			return;
 		}
 
-		// for (auto& widget : widget_names) {
-		// if (!widgets[widget]->handleEvent(event)) {
-		// should_exit = true;
-		// return;
-		// }
-		// }
+		for (auto& widget : widget_names) {
+			if (!widgets[widget]->handleEvent(event)) {
+				should_exit = true;
+				return;
+			}
+		}
 
 		// closing window events - X button on window or esc on keyboard
 		if (event.type == GF::Event::Closed || ESC.isKeyPressed()) {
@@ -136,17 +138,17 @@ namespace GF
 		float fElapsedTime = fps.getElapsedTime(); // time between frames
 		float fTotalTime = begin.getElapsedTime().asSeconds(); // time since start
 
-		// for (auto& widget : widget_names) {
-		// if (!widgets[widget]->update(fElapsedTime, fTotalTime) ||
-		// !widgets[widget]->draw()) {
-		// should_exit = true;
-		// return;
-		// }
-		// }
+		for (auto& widget : widget_names) {
+			if (!widgets[widget]->update(fElapsedTime, fTotalTime) ||
+			    !widgets[widget]->draw()) {
+				should_exit = true;
+				return;
+			}
+		}
 
-		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		//TODO: change to ERROR enum and change return of 'update' and 'draw' from 'bool' to 'GAME_STATE'
-		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		//TODO: change to ERROR enum and change return of 'update' and 'draw' from 'bool' to 'GAME_STATE'!
+		//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 		// updates and draws entities of the app
 		if (!states.onUpdate(fElapsedTime, fTotalTime) || !states.onDraw()) {
@@ -173,44 +175,44 @@ namespace GF
 			fps.setFillColor(sf::Color::White);
 	}
 
-	// void App::addWidget(GF::Widget* widget, std::string name)
-	// {
-	// 	if (name == "")
-	// 		name = widgets.size();
+	void App::addWidget(GF::Widget* widget, std::string name)
+	{
+		if (name == "")
+			name = widgets.size();
 
-	// 	widgets.insert(std::pair<std::string, GF::Widget*>(name, widget));
-	// 	widget_names.push_back(name);
-	// }
+		widgets.insert(std::pair<std::string, GF::Widget*>(name, widget));
+		widget_names.push_back(name);
+	}
 
-	// void App::deleteWidget(const std::string name)
-	// {
-	// 	if (widgets.find(name) != widgets.end()) {
-	// 		delete widgets[name];
-	// 		widgets.erase(name);
+	void App::deleteWidget(const std::string name)
+	{
+		if (widgets.find(name) != widgets.end()) {
+			delete widgets[name];
+			widgets.erase(name);
 
-	// 		auto it = std::find_if(widget_names.begin(), widget_names.end(),
-	// 		[&name](std::string element) { return element == name;});
-	// 		widget_names.erase(it);
-	// 	}
-	// }
+			auto it = std::find_if(widget_names.begin(), widget_names.end(),
+			[&name](std::string element) { return element == name;});
+			widget_names.erase(it);
+		}
+	}
 
-	// void App::clearWidgets()
-	// {
-	// 	for (auto& widget : widgets)
-	// 		delete widget.second;
+	void App::clearWidgets()
+	{
+		for (auto& widget : widgets)
+			delete widget.second;
 
-	// 	widgets.clear();
-	// 	widget_names.clear();
-	// }
+		widgets.clear();
+		widget_names.clear();
+	}
 
-	// GF::Widget* App::getWidget(const std::string name)
-	// {
-	// 	if (widgets.find(name) != widgets.end()) {
-	// 		return widgets[name];
-	// 	}
-	// 	else {
-	// 		std::cout << name << " not found." << std::endl;
-	// 		return nullptr;
-	// 	}
-	// }
+	GF::Widget* App::getWidget(const std::string name)
+	{
+		if (widgets.find(name) != widgets.end()) {
+			return widgets[name];
+		}
+		else {
+			std::cout << name << " not found." << std::endl;
+			return nullptr;
+		}
+	}
 }

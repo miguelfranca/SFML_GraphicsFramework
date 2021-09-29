@@ -28,10 +28,10 @@ namespace GF
 
 	protected:
 
-		// void addWidget(GF::Widget* widget, std::string name = "");
-		// void clearWidgets();
-		// inline void deleteWidget(const std::string name);
-		// GF::Widget* getWidget(const std::string name);
+		void addWidget(GF::Widget* widget, std::string name = "");
+		void clearWidgets();
+		inline void deleteWidget(const std::string name);
+		GF::Widget* getWidget(const std::string name);
 
 		void setClearColor(const sf::Color);
 
@@ -59,7 +59,7 @@ namespace GF
 
 		bool static_screen;
 
-		// std::map<std::string, GF::Widget*> widgets;
-		// std::vector<std::string> widget_names;
+		std::map<std::string, GF::Widget*> widgets;
+		std::vector<std::string> widget_names;
 	};
 }
