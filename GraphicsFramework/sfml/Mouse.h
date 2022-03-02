@@ -15,7 +15,7 @@ namespace GF {
 			bool doubleClicked(const GF::Event& event);
 
 			bool isPressed();
-			bool released(GF::Event& event);
+			bool released(const GF::Event& event);
 
 		private:
 			sf::Mouse::Button button;

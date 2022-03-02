@@ -37,10 +37,10 @@ namespace GF {
 		return false;
 	}
 
-	bool Mouse::Button::released(GF::Event& event) {
+	bool Mouse::Button::released(const GF::Event& event) {
 		return event.type == GF::Event::MouseButtonReleased && event.mouseButton.button == button;
 	}
-
+	
 	bool Mouse::Button::isPressed() {
 		return sf::Mouse::isButtonPressed(button);
 	}

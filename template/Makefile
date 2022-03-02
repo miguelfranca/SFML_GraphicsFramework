@@ -86,7 +86,7 @@ GREEN  = "\033[1;32m"
 RED    = "\033[1;31m"
 
 #executable has folder name
-EXECUTABLE 		:= $(shell basename "$(CURDIR)").exe
+EXECUTABLE 		:= $(shell basename "$(CURDIR)")
 
 INCLUDES 		:= $(addprefix -I,$(LIB_DIRS))
 

@@ -1,7 +1,7 @@
 make -j 4 -s
 
 if [ $? -eq 0 ] ; then
-  name=`basename "$(pwd)"`.exe
+  name=`basename "$(pwd)"`
 
 	if [[ "$1" == "t" || "$1" == "time" ]]; then
 		time $name

@@ -16,7 +16,7 @@ namespace GF
 		          sf::Color fill = sf::Color::White, sf::Color outline = sf::Color::Transparent, float thickness = 0);
 		Rectangle(sf::FloatRect rect);
 		bool isRolledOn(const sf::RenderWindow& window) const;
-		bool isClicked(const GF::Event& event, const sf::RenderWindow& window);
+		bool isClicked(const GF::Event& event) const;
 		void setup(sf::Vector2f size, sf::Vector2f pos, sf::Vector2f origin, sf::Color fill,
 		           sf::Color outline, float thickness);
 	private:
@@ -29,10 +29,10 @@ namespace GF
 		Circle() {}
 		Circle(float radius, sf::Vector2f pos = TOPLEFT_F, sf::Color fill = sf::Color::White,
 		       sf::Color outline = sf::Color::Transparent, float thickness = 1);
-		bool isColliding(GF::Circle& other);
-		bool contains(sf::Vector2f, float threshold = 0.);
+		bool isColliding(GF::Circle& other) const;
+		bool contains(sf::Vector2f, float threshold = 0.) const;
 		bool isRolledOn(const sf::RenderWindow& window, float threshold = 0.f) const;
-		bool isClicked(const GF::Event& event, const sf::RenderWindow& window, float threshold = 0.f);
+		bool isClicked(const GF::Event& event, float threshold = 0.f) const;
 		void setup(float radius, sf::Vector2f pos, sf::Color fill, sf::Color outline, float thickness);
 	private:
 	};
