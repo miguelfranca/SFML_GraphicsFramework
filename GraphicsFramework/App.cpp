@@ -104,7 +104,7 @@ namespace GF
 		// window.pollEvent returns false if no event was detected
 		if (!window.pollEvent(
 		        event)) // window.pollEvent does not change the event type if there is no event on the event buffer and returns false, so we change it by hand
-			event.type = GF::Event::Count; // unused event. Not the best solution...
+			event.type = GF::Event::Count; // unused event because its value is greater than all other events. Not the best solution...
 
 		return event.type;
 	}
