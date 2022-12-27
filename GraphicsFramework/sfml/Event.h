@@ -10,6 +10,8 @@ namespace GF {
 
 		void skip() { type = Count; }
 
+		bool isNothing() { return type == Count; }
+
 		void showMessage() {
 			switch (type)
 			{
