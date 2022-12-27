@@ -31,7 +31,8 @@ namespace GF {
 			int delta(GF::Event &event);
 		};
 		
-		static sf::Vector2f getPosition(const sf::RenderWindow &window);
+		static sf::Vector2f getPosition(const sf::RenderWindow& window);
+		static bool isInsideWindow(const sf::RenderWindow& window);
 		static Button Left;
 		static Button Right;
 		static Middle Wheel;

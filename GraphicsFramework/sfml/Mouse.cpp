@@ -49,6 +49,14 @@ namespace GF {
 		return sf::Vector2f((float)sf::Mouse::getPosition(window).x, (float)sf::Mouse::getPosition(window).y);
 	}
 
+	bool Mouse::isInsideWindow(const sf::RenderWindow& window){
+	    sf::Vector2f mousePos = Mouse::getPosition(window);
+	    sf::Vector2u windowSize = window.getSize();
+
+	    return (mousePos.x >= 0) && (mousePos.y >= 0) &&
+	    		(mousePos.x < windowSize.x) && (mousePos.y < windowSize.y);
+	}
+
 	bool Mouse::Middle::moved(GF::Event &event)
 	{
 		return event.type == sf::Event::MouseWheelMoved;
