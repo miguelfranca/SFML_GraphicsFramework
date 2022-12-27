@@ -15,7 +15,15 @@ bool Application::onCreate()
 // first thing to be called every frame
 bool Application::onHandleEvent(GF::Event& event)
 {
-	return true;
+	// skip if no events have happened and this function was just called 
+	// because of the function calls order logic (handle events -> update -> draw) 
+	if (event.isNothing()) return true;
+
+	// handle waiting events, because events can stay in queue for a long time and that
+	// is worse for user interaction. e.g maximum of 5 events per frame 
+	int c = 0;
+	while (window.pollEvent(event) && c++ < 5)
+		onHandleEvent(event);
 }
 
 // called every frame before draw

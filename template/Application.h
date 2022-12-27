@@ -5,6 +5,9 @@
 #include "GraphicsFramework/main.h"
 // #include "GraphicsFramework/sfml.h"
 
+/*
+    Return false on boolean functions to quit the app and close the window (calls onDestroy)
+ */
 class Application : public GF::App
 {
 public:
