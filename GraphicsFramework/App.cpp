@@ -5,7 +5,7 @@
 
 namespace GF
 {
-	App::App() : fps(&window), should_exit(false), static_screen(false)
+	App::App() : exit_key_exists(false), exit_key(sf::Keyboard::Escape), fps(&window), should_exit(false), static_screen(false)
 	{
 		states.add("home", this);
 	}
@@ -61,6 +61,11 @@ namespace GF
 		setupWindow(size.x, size.y, position.x, position.y, style);
 	}
 
+	void App::setExitKey(sf::Keyboard::Key key){
+		exit_key_exists = true;
+		exit_key = GF::ToggleKey(key);
+	}
+
 	void App::run()
 	{
 		begin.restart();
@@ -111,8 +116,6 @@ namespace GF
 
 	void App::handleEvent(GF::Event& event)
 	{
-		static GF::ToggleKey ESC(sf::Keyboard::Escape);
-
 		// handle app events
 		if (!states.onHandleEvent(event)) {
 			should_exit = true;
@@ -127,7 +130,7 @@ namespace GF
 		}
 
 		// closing window events - X button on window or esc on keyboard
-		if (event.type == GF::Event::Closed || ESC.isKeyPressed()) {
+		if (event.type == GF::Event::Closed || (exit_key_exists && exit_key.isKeyPressed())) {
 			should_exit = true;
 			return;
 		}

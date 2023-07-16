@@ -25,6 +25,8 @@ namespace GF
 		std::string title = "Window";
 		sf::RenderWindow window;
 		GF::StateMachine states;
+		bool exit_key_exists;
+		GF::ToggleKey exit_key;
 
 	protected:
 
@@ -43,6 +45,8 @@ namespace GF
 		void setupWindow(const sf::Vector2u size, const  unsigned x, const unsigned y, const int style = sf::Style::Default);
 		void setupWindow(const  unsigned sizex, const  unsigned sizey, const sf::Vector2i position = TOPLEFT_I, const int style = sf::Style::Default);
 		void setupWindow(const sf::Vector2u size, const sf::Vector2i position = TOPLEFT_I, const int style = sf::Style::Default);
+
+		void setExitKey(sf::Keyboard::Key);
 
 	private:
 		GF::Event::EventType pollEvents(GF::Event& event);

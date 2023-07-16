@@ -23,7 +23,7 @@ namespace GF {
 			sf::Clock clock;
 		};
 
-		class Middle : public Button{
+		class Middle : public Button {
 		public:
 			Middle() : Button(sf::Mouse::Button::Middle) {}
 
